@@ -19,7 +19,7 @@ const Layout = () => {
                             <img className='w-full h-full' src={Logo} alt="" />
                         </div>
                         <div className='flex gap-4 justify-center items-center relative'>
-                            <button className='py-2 px-6 overflow-hidden text-center bg-[#8b3dff] text-white rounded-[5px] font-medium hover:bg-[#9553f8]'>Create a Design</button>
+                            <button className='py-2 px-6 overflow-hidden text-center bg-[#8b3dff] text-white rounded-[3px] font-medium hover:bg-[#9553f8]'>Create a Design</button>
                             <div onClick={()=>setShow(!show)} className='cursor-pointer'>
                                 <img src="https://lh3.googleusercontent.com/ogw/AF2bZyiqufx1KqAy2AXM_dZgqtaVMLdi6kQ5BAVJNV3H-hml7II=s32-c-mo" className='w-[45px] h-[45px] rounded-full' alt="prfile" />
                             </div>
