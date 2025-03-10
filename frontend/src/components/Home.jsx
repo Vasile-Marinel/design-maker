@@ -1,26 +1,27 @@
 import React, { useState } from 'react'
-import Carousel from 'react-multi-carousel';
+import Carousel from 'react-multi-carousel';    //un slider/carousel pentru afisarea designurilor recente
 import 'react-multi-carousel/lib/styles.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';       //useNavigate → permite navigarea programatica catre alta pagina
 import { FaTrash } from 'react-icons/fa';
 
 const Home = () => {
 
     const navigate = useNavigate()
-    const [state, setState] = useState({
+    const [state, setState] = useState({    //state.width și state.height → retin valorile introduse de utilizator pentru dimensiuni personalizate
         width: 0,
         height: 0
     })
 
     const inputHandle = (e) => {
-        setState({
+        setState({      //Cand utilizatorul introduce un numar in Width sau Height, setState actualizeaza doar acea proprietate
             ...state,
             [e.target.name]: e.target.value
         })
     }
 
-    const [show, setShow] = useState(false)
-    const responsive = {
+    const [show, setShow] = useState(false)     //show → controleaza vizibilitatea formularului pentru dimensiuni
+
+    const responsive = {        //Seteaza numarul de elemente vizibile(design-uri recente de pe pagina Home) în functie de dimensiunea ecranului
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
             items: 5
@@ -43,8 +44,9 @@ const Home = () => {
         }
     };
 
+    // Navigare spre /design/create cu dimensiunile selectate de utilizator
     const create = () => {
-        navigate('/design/create', {
+        navigate('/design/create', {    //Navigheaza catre ruta /design/create si trimite datele introduse de utilizator pentru dimensiuni personalizate
             state: {
                 type: 'create',
                 width: state.width,
@@ -84,7 +86,7 @@ const Home = () => {
                         transitionDuration={500}
                     >
                         {
-                            [1, 2, 3, 4, 5, 6, 7, 8].map((d, i) => <div className='relative group w-full h-[220px] px-2' key={i}>
+                            [1, 2, 3, 4, 5, 6, 7, 8].map((d, i) => <div className='relative group w-full h-[220px] px-2' key={i}>   {/* Afiseaza 8 designuri recente intr-un carousel*/}
                                 <Link className='w-full h-full block bg-[#ffffff12] p-4 rounded-md'>
                                     <img className='w-full h-full rounded-md overflow-hidden' src="http://localhost:5173/project.png" alt="" />
                                 </Link>

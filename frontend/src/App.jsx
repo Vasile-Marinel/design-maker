@@ -1,7 +1,12 @@
-import {
+//Acest fisier este punctul central al aplicatiei React si defineste navigatia folosind react-router-dom
+//Acest App.jsx gestioneaza navigatia aplicatiei.
+//Foloseste react-router-dom pentru rute dinamice si layout-uri cu copii.
+
+import {  
   createBrowserRouter,
   RouterProvider,
-} from "react-router-dom";
+} from "react-router-dom";    //createBrowserRouter → Creeaza rutele aplicatiei. RouterProvider → Ofera router-ul intregii aplicatii.
+//Importam paginile si componentele necesare (Home, Projects, Templates, etc.).
 import Index from './pages/Index'
 import Layout from "./pages/Layout";
 import Home from "./components/Home";
@@ -10,14 +15,14 @@ import Templates from "./components/Templates";
 import CreateDesign from "./components/CreateDesign";
 import Main from "./pages/Main";
 
-const router = createBrowserRouter([
+const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele aplicatiei.
   {
-    path: "/",
-    element: <Layout />,
-    children: [
+    path: "/",    //path → Calea catre ruta.
+    element: <Layout />,    //element → Componenta care va fi randata.
+    children: [   //children → Rutele copil ale rutei parinte.
       {
-        path: '/',
-        element: <Home />
+        path: '/',        
+        element: <Home />   
       },
       {
         path: '/templates',
@@ -30,17 +35,17 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: "/design/create",
-    element: <CreateDesign />
+    path: "/design/create",     //path → Calea catre ruta.
+    element: <CreateDesign />   //element → Componenta care va fi randata.
   },
   {
-    path: "/design/:id/edit",
+    path: "/design/:id/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
     element: <Main />
   }
 ])
 
-function App() {
-  return <RouterProvider router={router} />
+function App() {    //RouterProvider face ca întreaga aplicație să folosească acest router.
+  return <RouterProvider router={router} />   
 }
 
 export default App

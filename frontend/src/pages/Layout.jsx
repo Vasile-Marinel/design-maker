@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import Logo from "../assets/Design-Maker.png";
-import { Link,useLocation } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";        //Link-creează linkuri pentru navigare între pagini fără reîncărcare
 import { FaHome } from "react-icons/fa";
 import { BsFolder,BsGrid1X2 } from "react-icons/bs";
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";      //este locul unde vor fi afișate componentele paginilor pe baza rutei actuale
 
 const Layout = () => {
 
-    const {pathname} = useLocation()
+    const {pathname} = useLocation()    // reține ruta curentă (de exemplu, /projects, /templates)
     const [show, setShow] = useState(false)
 
     return (

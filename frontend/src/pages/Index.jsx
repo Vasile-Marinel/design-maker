@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState } from "react";        //useState → Gestionarea stării pentru tipul formularului și vizibilitatea pop-up-ului.
 import Logo from "../assets/Design-Maker.png";
+//Importă iconițele pentru închidere (IoMdClose), Google (AiOutlineGoogle) și Facebook (FaFacebookF).
 import {IoMdClose} from 'react-icons/io'
 import {AiOutlineGoogle} from 'react-icons/ai'
 import {FaFacebookF} from 'react-icons/fa'
 
 const Index = () => {
 
-    const [type,setType] = useState('login')
-    const [show,setShow] = useState(false)
-    const [state,setState] = useState({
+    const [type,setType] = useState('login')        //type → Stochează tipul formularului (login sau signup).
+    const [show,setShow] = useState(false)      //show → Controlează vizibilitatea pop-up-ului.
+    const [state,setState] = useState({     //state → Stochează datele introduse în formular.
         name : '',
         email : '',
         password : ''
     })
+    // Folosește Tailwind CSS pentru tranziția între vizibil/invizibil ('visible opacity-100' : 'invisible opacity-30'). Tailwind CSS este utilizat pentru stilizare și tranziții animate
     return (
         <div className='bg-[#18191b] min-h-screen w-full'>
             <div className={`w-screen ${show ? 'visible opacity-100' : 'invisible opacity-30'} transition-all duration-500 h-screen fixed bg-[#252627ad] flex justify-center items-center`}>
