@@ -7,6 +7,10 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { set } from "mongoose";
 import TemplateDesign from "../components/main/TemplateDesign";
+import MyYmages from "../components/MyImages";
+import Projects from "../components/Projects";
+import Image from "../components/Image";
+import {QRCodeCanvas} from "qrcode.react";
 
 const Main = () => {
 
@@ -23,6 +27,8 @@ const Main = () => {
             name
         })
     }
+
+    const [qrText, setQrText] = useState("");
 
     return (
         <div className='min-w-screen h-screen bg-black'>
@@ -81,45 +87,67 @@ const Main = () => {
                         }
 
                         {
-                            state === 'shape' && <div>
-                                shape
+                            state === 'shape' && <div className='grid grid-cols-3 gap-2'>
+                                <div className='h-[90px] bg-[#3c3c3d] cursor-pointer'>
+                                </div>
+                                <div className='h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full'>
+                                </div>
+                                <div style={{clipPath: 'polygon(50% 0, 100% 100%, 0 100%)'}} className='h-[90px] bg-[#3c3c3d] cursor-pointer'></div>
                             </div>
                         }
 
                         {
-                            state === 'image' && <div>
-                                image
-                            </div>
+                            state === 'image' && <MyYmages/>
                         }
 
                         {
                             state === 'text' && <div>
-                                text
+                                <div className='grid grid-cols-1 gap-2'>
+                                    <div className='bg-[#3c3c3d] cursor-pointer font-bold p-3 text-white text-xl rounded-sm'>
+                                        <h2>Add a Text</h2>
+                                    </div>
+                                </div>
                             </div>
                         }
 
                         {
-                            state === 'project' && <div>
-                                project
+                            state === 'project' && <Projects/>
+                        }
+
+                        {
+                            state === 'initImage' && <div className='h-[90vh] overflow-x-auto flex justify-start items-start scrollbar-hide'>
+                                <Image/>
                             </div>
                         }
 
                         {
-                            state === 'initImage' && <div>
-                                initImage
+                            state === 'background' && <div className='h-[90vh] overflow-x-auto flex justify-start items-start scrollbar-hide'>
+                                <div className='grid grid-cols-2 gap-2'>
+                                    {
+                                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 26].map((img, i) => <div key={i} className='w-full h-[90px] overflow-hidden rounded-sm cursor-pointer'>
+                                            <img className='w-full h-full object-fill' src={`http://localhost:5173/project.png`} alt="" />
+                                        </div>)
+                                    }
+                                </div>
                             </div>
                         }
 
                         {
-                            state === 'background' && <div>
-                                background
-                            </div>
-                        }
-
-                        {
-                            state === 'qrcode' && <div>
-                                qrcode
-                            </div>
+                            state === 'qrcode' && (
+                                <div className="p-4 gap-5">
+                                    <h2 className="text-white mb-2 justify-center items-center flex grid">Generate QR Code</h2>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter text or URL"
+                                        className="w-full px-2 py-1 mb-3 rounded-md outline-none bg-gray-700 text-white"
+                                        value={qrText}
+                                        onChange={(e) => setQrText(e.target.value)}
+                                    />
+                                    <div className="flex justify-center">
+                                        {qrText && <QRCodeCanvas value={qrText} size={200} />}
+                                    </div>
+                                </div>
+                            )
                         }
                     </div>
                 </div>
