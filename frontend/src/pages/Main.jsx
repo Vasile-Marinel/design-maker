@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../components/Header";
 import { BsGrid1X2, BsFillImageFill, BsFolder, BsCloudUploadFill, BsQrCode} from "react-icons/bs";
 import { FaShapes } from "react-icons/fa";
@@ -7,7 +7,7 @@ import { MdKeyboardArrowLeft } from "react-icons/md";
 import { RxTransparencyGrid } from "react-icons/rx";
 import { set } from "mongoose";
 import TemplateDesign from "../components/main/TemplateDesign";
-import MyYmages from "../components/MyImages";
+import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
 import Image from "../components/Image";
 import {QRCodeCanvas} from "qrcode.react";
@@ -17,6 +17,9 @@ const Main = () => {
 
     const [state, setState] = useState('')
     const [current_component, setCurrentComponent] = useState('')
+    const [color, setColor] = useState('')
+    const [image, setImage] = useState('')
+    const [rotate, setRotate] = useState(0)
 
     const [show, setShow] = useState({
         status: true,
@@ -43,6 +46,20 @@ const Main = () => {
         console.log('rotateElement')
     }
 
+    const removeComponent = (id) => {
+        const temp = components.filter(c => c.id !== id)
+        setCurrentComponent('')
+        setComponents(temp)
+    }
+
+    const remove_background = () => {
+        const com = components.find(c => c.id === current_component.id)
+        const temp = components.filter(c => c.id !== current_component.id)
+        com.image = ''
+        setImage("")
+        setComponents([...temp, com])
+    }
+
     const [components, setComponents] = useState([
         {
             name: "main_frame",
@@ -57,11 +74,44 @@ const Main = () => {
         }
     ])
 
-    const removeComponent = () => {
-        console.log('removeComponent')
+    const createShape = (name, type) => {
+        const style = {
+            id: components.length + 1,
+            name: name,
+            type,
+            left: 10,
+            top: 10,
+            opacity: 1,
+            width: 200,
+            height: 150,
+            rotate,
+            z_index: 2,
+            color: '#3c3c3d',
+            setCurrentComponent: (a)=>setCurrentComponent(a),
+            remove_background: ()=>setImage(''),
+            moveElement,
+            resizeElement,
+            rotateElement
+        }
+        setComponents([...components, style])
     }
 
-    console.log(current_component)
+    useEffect(() => {
+        if (current_component) {
+
+            const index = components.findIndex(c => c.id === current_component.id)
+            const temp = components.filter(c => c.id !== current_component.id)
+
+            if(current_component.name === 'main_frame' && image) {
+                console.log(image)
+                components[index].image = image || current_component.image
+            }
+            components[index].color = color || current_component.color
+
+            setComponents([...temp, components[index]])
+
+        }
+    }, [color, image])
 
     const [qrText, setQrText] = useState("");
 
@@ -123,16 +173,16 @@ const Main = () => {
 
                         {
                             state === 'shape' && <div className='grid grid-cols-3 gap-2'>
-                                <div className='h-[90px] bg-[#3c3c3d] cursor-pointer'>
+                                <div onClick={()=>createShape('shape','rect')} className='h-[90px] bg-[#3c3c3d] cursor-pointer'>
                                 </div>
-                                <div className='h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full'>
+                                <div onClick={()=>createShape('shape','circle')} className='h-[90px] bg-[#3c3c3d] cursor-pointer rounded-full'>
                                 </div>
-                                <div style={{clipPath: 'polygon(50% 0, 100% 100%, 0 100%)'}} className='h-[90px] bg-[#3c3c3d] cursor-pointer'></div>
+                                <div onClick={()=>createShape('shape','trangle')} style={{clipPath: 'polygon(50% 0, 100% 100%, 0 100%)'}} className='h-[90px] bg-[#3c3c3d] cursor-pointer'></div>
                             </div>
                         }
 
                         {
-                            state === 'image' && <MyYmages/>
+                            state === 'image' && <MyImages/>
                         }
 
                         {
@@ -198,7 +248,13 @@ const Main = () => {
                             </div>
                             {
                                 current_component && <div className='h-full w-[250px] text-gray-300 bg-[#252627] px-3 py-2'>
-                                    Marinel
+                                    <div className='flex gap-6 flex-col items-start h-full px-3 justify-start pt-4'>
+                                        <div className='flex gap-4 justify-start items-start'>
+                                            <span>Color : </span>
+                                            <label className='w-[30px] h-[30px] cursor-pointer rounded-sm' style={{ background: `${current_component.color && current_component.color !== '#fff' ? current_component.color : 'gray'}` }} htmlFor="color"></label>
+                                            <input onChange={(e) => setColor(e.target.value)} type="color" className='invisible' id='color' />
+                                        </div>
+                                    </div>
                                 </div>
                             }
                         </div>
