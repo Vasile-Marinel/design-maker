@@ -209,8 +209,8 @@ const Main = () => {
                             state === 'background' && <div className='h-[90vh] overflow-x-auto flex justify-start items-start scrollbar-hide'>
                                 <div className='grid grid-cols-2 gap-2'>
                                     {
-                                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 26].map((img, i) => <div key={i} className='w-full h-[90px] overflow-hidden rounded-sm cursor-pointer'>
-                                            <img className='w-full h-full object-fill' src={`http://localhost:5173/project.png`} alt="" />
+                                        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 26].map((img, i) => <div onClick={()=>setImage('http://localhost:5173/project.png')} key={i} className='w-full h-[90px] overflow-hidden rounded-sm cursor-pointer'>
+                                            <img className='w-full h-full object-fill' src={`http://localhost:5173/project.png`} alt="image" />
                                         </div>)
                                     }
                                 </div>
@@ -254,6 +254,11 @@ const Main = () => {
                                             <label className='w-[30px] h-[30px] cursor-pointer rounded-sm' style={{ background: `${current_component.color && current_component.color !== '#fff' ? current_component.color : 'gray'}` }} htmlFor="color"></label>
                                             <input onChange={(e) => setColor(e.target.value)} type="color" className='invisible' id='color' />
                                         </div>
+                                        {
+                                            (current_component.name==='main_frame' && image) && <div>
+                                                <button className='p-[6px] bg-slate-700 text-white rounded-sm' onClick={remove_background}>Remove Background</button>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             }
