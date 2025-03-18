@@ -96,8 +96,46 @@ const Main = () => {
         window.addEventListener('mouseup', mouseUp)
     }
 
-    const rotateElement = () => {
-        console.log('rotateElement')
+    const rotateElement = (id ,currentInfo) => {
+        setCurrentComponent("")
+        setCurrentComponent(currentInfo)
+
+        const target = document.getElementById(id)
+        console.log(target);
+
+        const mouseMove  = ({ movementX, movementY }) => {
+
+            const getStyle = window.getComputedStyle(target)
+
+            const trans = getStyle.transform
+
+            const values = trans.split('(')[1].split(')')[0].split(',')     //get the current rotation value, ex(in console log): matrix(1,0,0,1,0,0)
+
+            const angle = Math.round(Math.atan2(values[1],values[0])* (180/Math.PI))     //get the angle of the rotation
+            
+            let deg = angle < 0 ? angle + 360 : angle
+
+            if(movementX){
+                deg = deg + movementX
+            }
+            target.style.transform = `rotate(${deg}deg)`
+
+        }
+        const mouseUp = (e) =>{
+            window.removeEventListener('mousemove', mouseMove)
+            window.removeEventListener('mouseup', mouseUp)
+
+            const getStyle = window.getComputedStyle(target)
+            const trans = getStyle.transform
+            const values = trans.split('(')[1].split(')')[0].split(',')     //get the current rotation value, ex(in console log): matrix(1,0,0,1,0,0)
+            const angle = Math.round(Math.atan2(values[1],values[0])* (180/Math.PI))     //get the angle of the rotation
+            let deg = angle < 0 ? angle + 360 : angle
+            setRotate(deg)
+
+        }
+
+        window.addEventListener('mousemove', mouseMove)
+        window.addEventListener('mouseup', mouseUp)
     }
 
     const removeComponent = (id) => {
@@ -159,6 +197,7 @@ const Main = () => {
             if(current_component.name !== 'text'){       //pentru ca shape-urile sa ia dimensiunea figurilor de langa ele
                 components[index].width = width || current_component.width
                 components[index].height = height || current_component.height
+                components[index].rotate = rotate || current_component.rotate
             }
 
             if(current_component.name === 'main_frame' && image) {
@@ -178,7 +217,7 @@ const Main = () => {
             setHeight('')
             setLeft('')
             setTop('')
-
+            setRotate(0)
         }
     }, [color, image, left, top, width, height])
 

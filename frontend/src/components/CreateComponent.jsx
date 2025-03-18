@@ -13,7 +13,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
                 width: info.width + 'px',
                 height: info.height + 'px',
                 background: info.color,
-                zIndex: info.z_index,
+                zIndex: info.z_index
             }}>
             {
                 info.image && <img className='w-full h-full' src={info.image} alt='image' />
@@ -80,7 +80,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
             <Element id={randValue} info={info} exId={`${randValue}t`} />
             <div id={`${randValue}t`} style={{
                 width: info.width + 'px',
-                height: info.width + 'px',
+                height: info.height + 'px',
                 background: info.color,
                 opacity: info.opacity,
                 clipPath: 'polygon(50% 0, 100% 100%, 0 100%)'
