@@ -12,6 +12,7 @@ import Projects from "../components/Projects";
 import Image from "../components/Image";
 import {QRCodeCanvas} from "qrcode.react";
 import CreateComponent from "../components/CreateComponent";
+import { parse } from "dotenv";
 
 const Main = () => {
 
@@ -24,6 +25,11 @@ const Main = () => {
     const [top, setTop] = useState('')
     const [width, setWidth] = useState('')
     const [height, setHeight] = useState('')
+    const [opacity, setOpacity] = useState('')
+
+    const [padding, setPadding] = useState('')
+    const [font, setFont] = useState('')
+    const [weight, setWeight] = useState('')
 
     const [show, setShow] = useState({
         status: true,
@@ -152,6 +158,10 @@ const Main = () => {
         setComponents([...temp, com])
     }
 
+    const opacityHandle = (e) => {
+        setOpacity(parseFloat(e.target.value))
+    }
+
     const [components, setComponents] = useState([
         {
             name: "main_frame",
@@ -180,11 +190,37 @@ const Main = () => {
             z_index: 2,
             color: '#3c3c3d',
             setCurrentComponent: (a)=>setCurrentComponent(a),
-            remove_background: ()=>setImage(''),
             moveElement,
             resizeElement,
             rotateElement
         }
+        setComponents([...components, style])
+    }
+
+    const add_text = (name, type) => {
+        const style = {
+            id: components.length + 1,
+            name: name,
+            type,
+            left: 10,
+            top: 10,
+            opacity: 1,
+            rotate,
+            z_index: 10,
+            padding:6,
+            font:22,
+            title: "Add text",
+            weight: 400,
+            color: '#3c3c3d',
+            setCurrentComponent: (a)=>setCurrentComponent(a),
+            moveElement,
+            resizeElement,
+            rotateElement
+        }
+
+        setWeight('')
+        setFont('')
+        setCurrentComponent(style)
         setComponents([...components, style])
     }
 
@@ -209,17 +245,20 @@ const Main = () => {
             if(current_component.name !== 'main_frame') {
                 components[index].left = left || current_component.left
                 components[index].top = top || current_component.top
+                components[index].opacity = opacity || current_component.opacity
             }
 
             setComponents([...temp, components[index]])
 
+            setColor('')
             setWidth('')
             setHeight('')
             setLeft('')
             setTop('')
             setRotate(0)
+            setOpacity('')
         }
-    }, [color, image, left, top, width, height])
+    }, [color, image, left, top, width, height, opacity])
 
     const [qrText, setQrText] = useState("");
 
@@ -296,7 +335,7 @@ const Main = () => {
                         {
                             state === 'text' && <div>
                                 <div className='grid grid-cols-1 gap-2'>
-                                    <div className='bg-[#3c3c3d] cursor-pointer font-bold p-3 text-white text-xl rounded-sm'>
+                                    <div onClick={()=>add_text('text', 'title')} className='bg-[#3c3c3d] cursor-pointer font-bold p-3 text-white text-xl rounded-sm'>
                                         <h2>Add a Text</h2>
                                     </div>
                                 </div>
@@ -365,6 +404,15 @@ const Main = () => {
                                         {
                                             (current_component.name==='main_frame' && image) && <div>
                                                 <button className='p-[6px] bg-slate-700 text-white rounded-sm' onClick={remove_background}>Remove Background</button>
+                                            </div>
+                                        }
+
+                                        {
+                                            current_component.name !== 'main_frame' && <div className='flex gap-3 flex-col'>
+                                                <div className='flex gap-1 justify-start items-start'> 
+                                                    <span className='text-md w-[70px]'>Opacity : </span>
+                                                    <input onChange={opacityHandle} className='w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md' type="number" step={0.1} min={0.1} max={1} value={current_component.opacity} />
+                                                </div>
                                             </div>
                                         }
                                     </div>
