@@ -18,30 +18,30 @@ import Main from "./pages/Main";
 const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele aplicatiei.
   {
     path: "/",    //path → Calea catre ruta.
-    element: <Layout />,    //element → Componenta care va fi randata.
-    children: [   //children → Rutele copil ale rutei parinte.
-      {
-        path: '/',        
-        element: <Home />   
-      },
-      {
-        path: '/templates',
-        element: <Templates />
-      },
-      {
-        path: '/projects',
-        element: <Projects />
-      }
-    ]
-  },
-  {
-    path: "/design/create",     //path → Calea catre ruta.
-    element: <CreateDesign />   //element → Componenta care va fi randata.
-  },
-  {
-    path: "/design/:id/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
-    element: <Main />
-  }
+    element: <Index />    //element → Componenta care va fi randata.
+  //   children: [   //children → Rutele copil ale rutei parinte.
+  //     {
+  //       path: '/',        
+  //       element: <Home />   
+  //     },
+  //     {
+  //       path: '/templates',
+  //       element: <Templates />
+  //     },
+  //     {
+  //       path: '/projects',
+  //       element: <Projects />
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: "/design/create",     //path → Calea catre ruta.
+  //   element: <CreateDesign />   //element → Componenta care va fi randata.
+  // },
+  // {
+  //   path: "/design/:id/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
+  //   element: <Main />
+   }
 ])
 
 function App() {    //RouterProvider face ca întreaga aplicație să folosească acest router.
