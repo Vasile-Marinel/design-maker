@@ -32,6 +32,7 @@ const Main = () => {
     const [font, setFont] = useState('')
     const [weight, setWeight] = useState('')
     const [text, setText] = useState('')
+    const [radius, setRadius] = useState(0)
 
     const [show, setShow] = useState({
         status: true,
@@ -226,6 +227,29 @@ const Main = () => {
         setComponents([...components, style])
     }
 
+    const add_image = (img) => {
+        const style = {
+            id: components.length + 1,
+            name: 'image',
+            type: 'image',
+            left: 10,
+            top: 10,
+            opacity: 1,
+            width: 200,
+            height: 150,
+            rotate,
+            z_index: 2,
+            ratius: 0,
+            image: img,
+            setCurrentComponent: (a)=>setCurrentComponent(a),
+            moveElement,
+            resizeElement,
+            rotateElement
+        }
+        setCurrentComponent(style)
+        setComponents([...components, style])
+    }
+
     useEffect(() => {       //pentru ca shape-urile sa ia dimensiunea figurilor de langa ele
         if (current_component) {
 
@@ -242,6 +266,9 @@ const Main = () => {
                 components[index].padding = padding || current_component.padding
                 components[index].weight = weight || current_component.weight
                 components[index].title = text || current_component.title
+            }
+            if(current_component.name === 'image') {
+                components[index].radius = radius || current_component.radius
             }
 
             if(current_component.name === 'main_frame' && image) {
@@ -269,7 +296,7 @@ const Main = () => {
             setZIndex('')
             setText('')
         }
-    }, [color, image, left, top, width, height, opacity, zIndex, padding, font, weight, text])
+    }, [color, image, left, top, width, height, opacity, zIndex, padding, font, weight, text, radius])
 
     const [qrText, setQrText] = useState("");
 
@@ -359,7 +386,7 @@ const Main = () => {
 
                         {
                             state === 'initImage' && <div className='h-[90vh] overflow-x-auto flex justify-start items-start scrollbar-hide'>
-                                <Image/>
+                                <Image add_image={add_image} />
                             </div>
                         }
 
@@ -428,6 +455,12 @@ const Main = () => {
                                                     <span className='text-md w-[70px]'>Z-Index : </span>
                                                     <input onChange={(e)=>setZIndex(parseInt(e.target.value))} className='w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md' type="number" step={1} value={current_component.z_index} />
                                                 </div>
+                                                {
+                                                    current_component.name ==='image' &&  <div className='flex gap-6 justify-start items-start'> 
+                                                        <span className='text-md w-[70px]'>Radius : </span>
+                                                        <input onChange={(e)=>setRadius(parseInt(e.target.value))} className='w-[70px] border border-gray-700 bg-transparent outline-none px-2 rounded-md' type="number" step={1} value={current_component.radius} />
+                                                    </div>
+                                                }
                                                 {
                                                     current_component.name === 'text' && <>
                                                         <div className='flex gap-6 justify-start items-start'> 
