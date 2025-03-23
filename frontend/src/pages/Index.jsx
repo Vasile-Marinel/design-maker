@@ -133,7 +133,6 @@ import Logo from "../assets/Design-Maker.png";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
 import { auth, provider, db } from '../../../firebaseConfig'; // Importă autentificarea și provider-ul
 import '../pages/Login.css';
-// import { db } from '../firebaseConfig.js'; // Importă configurația Firestore
 import { doc, setDoc, getDoc } from "firebase/firestore"; // Importă Firestore
 
 const loginWithGoogle = () => {
@@ -189,24 +188,24 @@ function Index() {
     const [username, setUsername] = useState('');  // Adăugat pentru sign up
 
     return (
-        <div className='flex justify-center items-center min-h-screen w-full h-full'>
+        <div className='auth-body flex justify-center items-center min-h-screen w-full h-full'>
             <div className='absolute top-4 left-4 w-[300px] h-[58px]'>
                 <img className='w-full h-full' src={Logo} alt="" />
             </div>
             <div className='py-[168px] flex justify-center items-center flex-col gap-6'>
-                <h2 className='text-5xl text-[#c7c5c5] font-bold'>What will you design today?</h2>
-                <span className='text-[#aca9a9] text-2xl font-medium'>Design Maker makes it easy to create and share professional designs.</span>
+                <h2 className='text-5xl text-[#c7c5c5] font-bold auth-login-text'>What will you design today?</h2>
+                <span className='text-[#aca9a9] text-2xl font-medium auth-login-text'>Design Maker makes it easy to create and share professional designs.</span>
             </div>
             <div className="container flex justify-center items-center w-full h-full top-9 left-0 right-0">
-                <div className="main">
+                <div className="auth-main">
                     {/* Checkbox pentru a schimba între login și sign up */}
-                    <input type="checkbox" id="chk" aria-hidden="true" />
+                    <input className="auth-input" type="checkbox" id="auth-chk" aria-hidden="true" />
 
                     {/* Formul de signup */}
-                    <div className="signup">
+                    <div className="auth-signup">
                         <form>
-                            <label htmlFor="chk" aria-hidden="true">Sign up</label>
-                            <input className="textBox"
+                            <label className="auth-label" htmlFor="auth-chk" aria-hidden="true">Sign up</label>
+                            <input className="auth-textBox"
                                 type="text"
                                 name="txt"
                                 placeholder="User name"
@@ -214,7 +213,7 @@ function Index() {
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            <input className="textBox"
+                            <input className="auth-textBox"
                                 type="email"
                                 name="email"
                                 placeholder="Email"
@@ -228,7 +227,7 @@ function Index() {
                                 placeholder="Phone Number"
                                 required
                             /> */}
-                            <input className="textBox"
+                            <input className="auth-textBox"
                                 type="password"
                                 name="pswd"
                                 placeholder="Password"
@@ -236,7 +235,7 @@ function Index() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <button className="loginButton" 
+                            <button className="auth-loginButton auth-button" 
                                 type="button"
                                 onClick={() => registerWithEmailPassword(email, password, username)}
                             >
@@ -246,10 +245,10 @@ function Index() {
                     </div>
 
                     {/* Formul de login */}
-                    <div className="login">
+                    <div className="auth-login">
                         <form>
-                            <label htmlFor="chk" aria-hidden="true">Login</label>
-                            <input className="textBox"
+                            <label className="auth-label" htmlFor="auth-chk" aria-hidden="true">Login</label>
+                            <input className="auth-textBox"
                                 type="email"
                                 name="email"
                                 placeholder="Email"
@@ -257,7 +256,7 @@ function Index() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
-                            <input className="textBox"
+                            <input className="auth-textBox"
                                 type="password"
                                 name="pswd"
                                 placeholder="Password"
@@ -265,24 +264,24 @@ function Index() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
-                            <button className="loginButton"
+                            <button className="auth-loginButton auth-button"
                                 type="button"
                                 onClick={() => loginWithEmailPassword(email, password)}
                             >
                                 Login
                             </button>
 
-                            <div className="or-divider">
+                            <div className="auth-or-divider">
                                 <span>or</span>
                             </div>
                             
                             <button
                                 type="button"
-                                className="google-button px-3 flex justify-center items-center gap-2 py-2 rounded-md bg-orange-700 w-full text-white outline-none hover:bg-orange-800"
+                                className="auth-google-button auth-button px-3 flex justify-center items-center gap-2 py-2 rounded-md bg-orange-700 w-full text-white outline-none hover:bg-orange-800"
                                 onClick={loginWithGoogle}
                             >
-                                <span><AiOutlineGoogle/></span>
-                                <span>Login with Google</span>
+                                <span className="auth-googleIcon"><AiOutlineGoogle/></span>
+                                <span className="auth-googleText">Login with Google</span>
                             </button>
                         </form>
                     </div>

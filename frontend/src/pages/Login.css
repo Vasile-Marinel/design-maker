@@ -1,4 +1,4 @@
-body{
+.auth-body{
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -8,7 +8,7 @@ body{
 	font-family: 'Jost', sans-serif;
 	background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e);
 }
-.main{
+.auth-main{
 	width: 350px;
 	height: 500px;
 	background: red;
@@ -17,15 +17,15 @@ body{
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
 }
-#chk{
+#auth-chk{
 	display: none;
 }
-.signup{
+.auth-signup{
 	position: relative;
 	width:100%;
 	height: 100%;
 }
-label{
+.auth-label{
 	color: #fff;
 	font-size: 2.3em;
 	justify-content: center;
@@ -35,7 +35,7 @@ label{
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
-.textBox{
+.auth-textBox{
 	position: relative;
 	width: 80%;
 	height: 100%;
@@ -48,7 +48,7 @@ label{
 	outline: none;
 	border-radius: 5px;
 }
-input{
+.auth-input{
 	width: 60%;
 	height: 20px;
 	background: #e0dede;
@@ -60,7 +60,7 @@ input{
 	outline: none;
 	border-radius: 5px;
 }
-button{
+.auth-button{
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
@@ -77,32 +77,37 @@ button{
 	transition: .2s ease-in;
 	cursor: pointer;
 }
-button:hover{
+.auth-login-text{
+	margin-left: 600px;
+	width: 80%;
+	margin-right: -100px;
+}
+.auth-button:hover{
 	background: #6d44b8;
 }
-.login{
+.auth-login{
 	height: 460px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-180px);
 	transition: .8s ease-in-out;
 }
-.login label{
+.auth-login .auth-label{
 	color: #573b8a;
 	transform: scale(.6);
 }
 
-#chk:checked ~ .login{
+#auth-chk:checked ~ .auth-login{
 	transform: translateY(-500px);
 }
-#chk:checked ~ .login label{
+#auth-chk:checked ~ .auth-login .auth-label{
 	transform: scale(1);	
 }
-#chk:checked ~ .signup label{
+#auth-chk:checked ~ .auth-signup .auth-label{
 	transform: scale(.6);
 }
 
-.loginButton{
+.auth-loginButton{
 	width: 80%;
 	color: #573b8a;
 	color: white;
@@ -110,7 +115,21 @@ button:hover{
     margin-top: 30px;
 }
 
-.google-button {
+.auth-googleText{
+	position: relative;
+  	top: -17px; /* Mută textul mai sus */
+	align-items: flex-start; /* Mută textul mai sus */
+	display: inline-block;
+	justify-content: center;
+	padding-left: 10px;
+}
+
+.auth-googleIcon{
+	position: relative;
+  	top: 2px; /* Mută textul mai sus */
+}
+
+.auth-google-button {
   background-color: #db4437; /* Culoarea tipică a butonului Google */
   color: white;
   border: none;
@@ -122,18 +141,18 @@ button:hover{
   margin-top: 10px;
 }
 
-.google-button:hover {
+.auth-google-button:hover {
   background-color: #c1351d;
 }
 
 /* Delimitator "or" între cele două butoane */
-.or-divider {
+.auth-or-divider {
   margin: -5px 0; /* Spațiu între butoane */
   margin-bottom: 10px; /* Spațiu mai mare între butoane și input */
   text-align: center; /* Centrarea textului */
 }
 
-.or-divider span {
+.auth-or-divider span {
   color: rgba(4, 14, 20, 0.473); /* Culoare albă estompată */
   font-size: 16px; /* Dimensiune moderată */
   font-weight: 500; /* Grosimea textului */
@@ -141,7 +160,7 @@ button:hover{
 }
 
 /* Opțional, poți adăuga un border subtire pentru "or" */
-.or-divider span::before {
+.auth-or-divider span::before {
   content: "";
   display: block;
   border-top: 1px solid rgba(255, 255, 255, 0.041); /* Linie subțire */
