@@ -18,7 +18,7 @@ import Main from "./pages/Main";
 const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele aplicatiei.
   {
     path: "/",    //path → Calea catre ruta.
-    element: <Layout />,    //element → Componenta care va fi randata.
+    element: <Index />,    //element → Componenta care va fi randata.
     children: [   //children → Rutele copil ale rutei parinte.
       {
         path: '/',        

@@ -48,48 +48,117 @@
 
 // app.listen(PORT, () => console.log(`Server is running on port ${PORT}..`))
 
+
+
+//             VARIANTA 2
+
+
+// const express = require("express");
+// const admin = require("firebase-admin");
+// const dotenv = require("dotenv");
+// const cors = require("cors");
+// const path = require("path");
+
+// dotenv.config();
+
+// const app = express();
+
+// // Configurare CORS
+// if (process.env.NODE_ENV === "local") {
+//     app.use(cors({
+//         origin: "http://localhost:3000",
+//         credentials: true
+//     }));
+// } else {
+//     app.use(cors({ credentials: true }));
+// }
+
+// // Inițializare Firebase Admin SDK
+// try {
+//     admin.initializeApp({
+//         credential: admin.credential.cert(require(process.env.GOOGLE_APPLICATION_CREDENTIALS))
+//     });
+    
+//     const db = admin.firestore();
+    
+//     if (process.env.NODE_ENV === "local") {
+//         console.log("✅ Local Firestore database is connected...");
+//     } else {
+//         console.log("✅ Production Firestore database is connected...");
+//     }
+// } catch (error) {
+//     console.error("❌ Firestore database connection failed:", error);
+// }
+
+// // Servește frontend-ul în producție
+// if (process.env.NODE_ENV === "production") {
+//     app.use(express.static(path.join(__dirname, "./frontend/dist")));
+//     app.get("*", (req, res) => {
+//         res.sendFile(path.resolve(__dirname, "./", "frontend", "dist", "index.html"));
+//     });
+// }
+
+// // Pornirea serverului
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}..`));
+
+// module.exports = { db: admin.firestore() };
+
 const express = require("express");
 const admin = require("firebase-admin");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
+const fs = require("fs");
 
 dotenv.config();
 
 const app = express();
 
 // Configurare CORS
-if (process.env.NODE_ENV === "local") {
-    app.use(cors({
-        origin: "http://localhost:3000",
-        credentials: true
-    }));
-} else {
-    app.use(cors({ credentials: true }));
-}
+app.use(cors({
+    origin: process.env.NODE_ENV === "local" ? "http://localhost:3000" : "*",
+    credentials: true
+}));
 
 // Inițializare Firebase Admin SDK
+let serviceAccount;
 try {
+    serviceAccount = JSON.parse(fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, "utf8"));
     admin.initializeApp({
-        credential: admin.credential.cert(require(process.env.GOOGLE_APPLICATION_CREDENTIALS))
+        credential: admin.credential.cert(serviceAccount)
     });
-    
-    const db = admin.firestore();
-    
-    if (process.env.NODE_ENV === "local") {
-        console.log("✅ Local Firestore database is connected...");
-    } else {
-        console.log("✅ Production Firestore database is connected...");
-    }
+
+    console.log("✅ Firestore database connected...");
 } catch (error) {
     console.error("❌ Firestore database connection failed:", error);
 }
+
+const db = admin.firestore();
+
+// Middleware pentru a putea folosi JSON în request-uri
+app.use(express.json());
+
+// Exemplu de API pentru înregistrare utilizatori
+app.post("/api/register", async (req, res) => {
+    try {
+        const { email, username } = req.body;
+        if (!email || !username) return res.status(400).json({ error: "Email și Username sunt necesare" });
+
+        const userRef = db.collection("users").doc(email);
+        await userRef.set({ username, email });
+
+        res.status(201).json({ message: "Utilizator înregistrat cu succes" });
+    } catch (error) {
+        res.status(500).json({ error: "Eroare la înregistrare" });
+    }
+});
 
 // Servește frontend-ul în producție
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "./frontend/dist")));
     app.get("*", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "./", "frontend", "dist", "index.html"));
+        res.sendFile(path.resolve(__dirname, "./frontend/dist/index.html"));
     });
 }
 
@@ -97,4 +166,4 @@ if (process.env.NODE_ENV === "production") {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}..`));
 
-module.exports = { db: admin.firestore() };
+module.exports = { db };

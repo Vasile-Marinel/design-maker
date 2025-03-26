@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react";        //useState → folosit pentru a gestiona starea componentei, este o bibliotecă de hook-uri standard React
 import Logo from "../assets/Design-Maker.png";
 import { Link,useLocation } from "react-router-dom";        //Link-creează linkuri pentru navigare între pagini fără reîncărcare
 import { FaHome } from "react-icons/fa";
@@ -8,7 +8,7 @@ import { Outlet } from "react-router-dom";      //este locul unde vor fi afișat
 const Layout = () => {
 
     const {pathname} = useLocation()    // reține ruta curentă (de exemplu, /projects, /templates)
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState(false)     //show → controleaza vizibilitatea formularului pentru dimensiuni
 
     return (
         <div className='bg-[#18191b] min-h-screen w-full'>

@@ -5,16 +5,17 @@ import CreateComponent from './CreateComponent'
 
 const CreateDesign = () => {
 
-    const ref = useRef()
-    const { state } = useLocation()
+    const ref = useRef()        //ref-ul este folosit pentru a accesa elementul DOM, DOM este structura de obiecte a documentului HTML  
+    const { state } = useLocation()     //Preia datele trimise din `Home` in 'state'
+    //useNavigate din Home trimite datele(pe path-ul specificat) introduse de utilizator pentru dimensiuni personalizate catre aceasta pagina, iar useLocation le preia
 
-    const obj = {
-        name: "main_frame",
-        type: "rect",
-        id: Math.floor((Math.random() * 100) + 1),
-        height: state.height,
+    const obj = {     //acest obiect (obj) defineste un element grafic
+        name: "main_frame",   //numele obiectului
+        type: "rect",   //tipul obiectului, in cazul de fata un dreptunghi
+        id: Math.floor((Math.random() * 100) + 1),      //un id unic generat aleator
+        height: state.height,       //inaltimea si latimea obiectului
         width: state.width,
-        z_index: 1,
+        z_index: 1,     //z-index-ul obiectului, adica ordinea de afisare
         color: "green",
         image: ""
     }

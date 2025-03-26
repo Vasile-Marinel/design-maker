@@ -35,6 +35,66 @@
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
+@keyframes shake {
+	0% { transform: translateX(0); }
+	25% { transform: translateX(-5px); }
+	50% { transform: translateX(5px); }
+	75% { transform: translateX(-5px); }
+	100% { transform: translateX(0); }
+  }
+  
+  .shake {
+	animation: shake 0.3s ease-in-out;
+	border: 2px solid red !important;
+  }
+  .email-error-message {
+	color: #f44336; /* Culoarea roșie pentru mesajul de eroare */
+	width: 80%;
+	position: relative;
+	left: 6px;
+	top:-17px;
+	font-size: 0.875rem;
+	margin: 20px auto;
+	line-height: 1;
+	margin-bottom: -17px;
+  }
+
+  .login-error-message {
+	color: #f44336; /* Culoarea roșie pentru mesajul de eroare */
+	width: 80%;
+	position: relative;
+	left: 6px;
+	top:-17px;
+	font-size: 0.875rem;
+	margin: 20px auto;
+	line-height: 1;
+	margin-bottom: -35px;
+  }
+
+  .password-container {
+    position: relative;
+    width: 100%;
+}
+
+.auth-textBox {
+    width: 100%;
+    padding-right: 40px; /* Spațiu pentru iconiță */
+}
+
+.password-toggle {
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+}
+
+.password-toggle:hover {
+    color: #333;
+}
+
 .auth-textBox{
 	position: relative;
 	width: 80%;
