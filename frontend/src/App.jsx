@@ -14,11 +14,16 @@ import Projects from "./components/Projects";
 import Templates from "./components/Templates";
 import CreateDesign from "./components/CreateDesign";
 import Main from "./pages/Main";
+import {token_decode} from './utils/index'
+
+// Verifică dacă utilizatorul este autentificat
+const token = localStorage.getItem('user_token');
+const userInfo = token_decode(token);
 
 const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele aplicatiei.
   {
     path: "/",    //path → Calea catre ruta.
-    element: <Index />,    //element → Componenta care va fi randata.
+    element: userInfo ? <Layout/> : <Index />,    //element → Componenta care va fi randata.
     children: [   //children → Rutele copil ale rutei parinte.
       {
         path: '/',        

@@ -136,23 +136,56 @@ import '../pages/Login.css';
 import { doc, setDoc, getDoc } from "firebase/firestore"; // Importă Firestore
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
+
 const loginWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
-        const user = result.user;
-        console.log("User info:", user);
-      })
-      .catch((error) => {
-        console.error("Error during sign-in:", error);
-      });
+    .then(async (result) => {
+      const user = result.user;
+      console.log("User info:", user);
+      
+        // Obține token-ul ID după autentificare
+      const idToken = await user.getIdToken(true);
+      // Salvează token-ul în localStorage
+      localStorage.setItem('user_token', idToken);
+
+      // Salvăm utilizatorul în Firestore dacă nu există deja
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+          await setDoc(userRef, {
+              username: user.displayName,
+              email: user.email,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              image: user.photoURL || ""  // Dacă utilizatorul are o imagine de profil din Google, o salvăm
+          });
+          console.log("User info saved to Firestore!");
+      } else {
+          console.log("User already exists in Firestore.");
+      }
+       // Redirecționează utilizatorul la pagina principală
+       window.location.href = "/";
+    })
+    .catch((error) => {
+      console.error("Error during Google login:", error);
+    });
 };
 
 const loginWithEmailPassword = (email, password, setShakeEmail, setShakePassword, setLoginError) => {
     signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
+        .then(async (userCredential) => {
             const user = userCredential.user;
             console.log("Logged in with email:", user);
-            setLoginError(''); // sterge eroarea daca login-ul reuseste
+
+            // Obține token-ul ID după autentificare
+            const idToken = await user.getIdToken(true);
+            // Salvează token-ul în localStorage
+            localStorage.setItem('user_token', idToken);
+
+            setLoginError(''); // stergem eroarea daca login-ul reuseste
+            // Redirecționează utilizatorul la pagina principală
+            window.location.href = "/";
         })
         .catch((error) => {
             console.error("Error signing in with email and password:", error);
@@ -165,19 +198,6 @@ const loginWithEmailPassword = (email, password, setShakeEmail, setShakePassword
             setLoginError("Email or password incorrect");
         });
 };
-// async function loginWithEmailPassword(email, password, setShakeEmail, setShakePassword, setLoginError) {
-//     try {
-//         await signInWithEmailAndPassword(auth, email, password);
-//         console.log("Logged in successfully");
-//         setLoginError(''); // Șterge eroarea dacă login-ul reușește
-//     } catch (error) {
-//         setShakeEmail(true);
-//         setTimeout(() => setShakeEmail(false), 500);
-//         setShakePassword(true);
-//         setTimeout(() => setShakePassword(false), 500);
-//         setLoginError("Email or password incorrect");
-//     }
-// }
 
 const registerWithEmailPassword = async (email, password, username, setShakeEmail, setShakePassword, setEmailError, setShakeUsername) => {
     let hasError = false;       // Daca hasError este true, functia se oprește si nu mai incearcă sa autentifice sau sa inregistreze utilizatorul
@@ -210,6 +230,11 @@ const registerWithEmailPassword = async (email, password, username, setShakeEmai
         const user = userCredential.user;
         console.log("User created:", user);
 
+        // Obține token-ul ID după crearea utilizatorului
+        const idToken = await user.getIdToken(true);
+        // Salvează token-ul în localStorage
+        localStorage.setItem('user_token', idToken);
+
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
@@ -218,12 +243,16 @@ const registerWithEmailPassword = async (email, password, username, setShakeEmai
                 username: username,
                 email: email,
                 createdAt: new Date(),
+                updatedAt: new Date(),  // Adăugat updatedAt
+                image: "" // Inițial, nu are o imagine de profil
             });
             setEmailError('');
             console.log("User info saved to Firestore!");
         } else {
             console.log("User already exists in Firestore.");
         }
+        // Redirecționează utilizatorul la pagina principală
+        window.location.href = "/";
 
     } catch (error) {
          // Aici gestionăm erorile
@@ -248,6 +277,7 @@ function Index() {
     const [loginError, setLoginError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+ 
     return (
         <div className='auth-body flex justify-center items-center min-h-screen w-full h-full'>
             <div className='absolute top-4 left-4 w-[300px] h-[58px]'>
@@ -327,7 +357,7 @@ function Index() {
                                 <input className={`auth-textBox ${shakePassword ? "shake" : ""}`}
                                     type={showPassword ? "text" : "password"}
                                     name="pswd"
-                                    placeholder="Password (6+ characters)"
+                                    placeholder="Password"
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
