@@ -19,16 +19,14 @@
 // module.exports = model('designs', user_schema)
 
 
-
-const db = require("../server"); // Importăm instanța Firestore
+const { db } = require("../firebaseAdmin"); // NU importa din ../server
+// Firestore din Admin SDK suportă direct db.collection()
 
 class DesignModel {
     async createDesign(data) {
         try {
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
             const designRef = await db.collection("designs").add(data);
-            return { id: designRef.id, ...data };
+            return { id: designRef.id, ...data };       //designRef.id - este ID-ul unic generat automat de Firestore pentru acel document
         } catch (error) {
             throw new Error("Failed to create design: " + error.message);
         }
@@ -36,29 +34,3 @@ class DesignModel {
 }
 
 module.exports = new DesignModel();
-
-
-
-
-// import { db } from "../firebaseConfig.js";
-// import { collection, addDoc } from "@firebase/firestore";
-
-// const create_user_design = async (userId, components, imageUrl) => {
-//     try {
-//         const docRef = await addDoc(collection(db, "designs"), {
-//             userId,
-//             components,
-//             imageUrl,
-//             createdAt: new Date(),
-//             updatedAt: new Date()
-//         });
-
-//         return docRef.id; // Returnăm ID-ul documentului nou creat
-//     } catch (error) {
-//         console.error("Eroare la salvarea design-ului:", error);
-//         throw error;
-//     }
-// };
-
-// export default create_user_design; // Export default
-// module.exports = new create_user_design();

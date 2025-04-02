@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as htmlToImage from 'html-to-image'  //importa html-to-image pentru a converti un element HTML in imagine
 import { useLocation, useNavigate } from 'react-router-dom'
 import RotateLoader from 'react-spinners/RotateLoader'  //importa RotateLoader pentru a afisa un loader rotativ
-import { db, storage } from 'C:\\Users\\vasil\\OneDrive\\Desktop\\AC_Informatica\\ANUL3\\Design_editor\\firebaseConfig.js'; // Importăm configurările Firebase
+import { db } from 'C:\\Users\\vasil\\OneDrive\\Desktop\\AC_Informatica\\ANUL3\\Design_editor\\firebaseConfig.js'; // Importăm configurările Firebase
 import { collection, addDoc } from '@firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
 import { getAuth } from '@firebase/auth'; // Importăm getAuth din Firebase
@@ -59,7 +59,7 @@ const CreateDesign = () => {
             try {
                 setLoader(true)     //setLoader seteaza loader-ul la true pentru a afisa loader-ul rotativ
                 const { data } = await api.post('/api/create-user-design', formData)
-                navigate(`/design/${data.design.uid}/edit`)     //navigheaza catre pagina design-ului creat
+                navigate(`/design/${data.design.id}/edit`)     //navigheaza catre pagina design-ului creat
                 setLoader(false)     //setLoader seteaza loader-ul la false pentru a ascunde loader-ul rotativ
             } catch (error) {
                 setLoader(false)     //setLoader seteaza loader-ul la false pentru a ascunde loader-ul rotativ

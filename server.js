@@ -104,8 +104,12 @@
 
 // module.exports = { db: admin.firestore() };
 
+
+
+
+
+// server.js
 const express = require("express");
-const admin = require("firebase-admin");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const path = require("path");
@@ -113,49 +117,28 @@ const path = require("path");
 // Încarcă variabilele din fișierul .env
 dotenv.config();
 
+// 🔥 Inițializăm Firebase Admin SDK (inclusiv logul "connected")
+require("./firebaseAdmin");
+
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
-// Configurare CORS în funcție de mediu
-if (process.env.NODE_ENV === 'local') {
-    app.use(cors({
-        origin: 'http://localhost:5173', // Frontend-ul local
-        credentials: true
-    }));
-} else {
-    // Dacă suntem în producție, setăm doar credentials
-    app.use(cors({
-        credentials: true
-    }));
-} // Permitem cererile CORS
-// acestă configurație este complet validă și recomandată atunci când frontend-ul și backend-ul rulează pe porturi sau domenii diferite în timpul dezvoltării. 
-// Dacă, de exemplu, frontend-ul tău este pe localhost:5173 și backend-ul pe localhost:5004, acest lucru face ca backend-ul să permită 
-// cererile doar de la localhost:5173 și să trateze corect cookie-urile (dacă folosești autentificare bazată pe sesiuni).
+// 🔐 Configurare CORS în funcție de mediu
+app.use(cors({
+    origin: process.env.NODE_ENV === 'local' ? 'http://localhost:5173' : true,
+    credentials: true,
+}));
 
- app.use('/api', require('./routes/designRouts'))    //Importam rutele pentru autentificare
-// app.use('/api', require('./routes/authRoutes'))    //Importam rutele pentru autentificare
-// Inițializare Firebase Admin SDK
-try {
-        admin.initializeApp({
-        credential: admin.credential.cert(require(process.env.GOOGLE_APPLICATION_CREDENTIALS))      //Atunci cand suntem in productie, folosim credentialele de productie
-    });
+// 🧭 Rute API
+app.use('/api', require('./routes/designRouts'));
+// app.use('/api', require('./routes/authRoutes')); // activează dacă ai rute de autentificare
 
-    console.log("✅ Firestore database is connected...");
-} catch (error) {
-    console.error("❌ Firestore database connection failed:", error);
-}
-
-// Obținem referința către baza de date Firestore
-const db = admin.firestore();
-
-// Servește frontend-ul în producție (dacă este necesar)
+// 🌐 Servește frontend-ul în producție (vite build dist)
 app.use(express.static(path.join(__dirname, "./frontend/dist")));
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./", "frontend", "dist", "index.html"));
+    res.sendFile(path.resolve(__dirname, "./frontend/dist/index.html"));
 });
 
-// Pornirea serverului
+// 🚀 Pornește serverul
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}...`));
-
-module.exports = { db };
