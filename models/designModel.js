@@ -46,6 +46,16 @@ class DesignModel {
             throw new Error("Failed to fetch design: " + error.message);
         }
     }
+
+    async updateDesignById(designId, newData) {
+        try {
+            const designRef = db.collection("designs").doc(designId);
+            await designRef.set(newData, { merge: true }); // sau fără merge, dacă vrei suprascriere
+            return true;
+        } catch (error) {
+            throw new Error("Failed to update design: " + error.message);
+        }
+    }
     
 }
 

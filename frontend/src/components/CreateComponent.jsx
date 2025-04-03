@@ -102,13 +102,12 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
             zIndex: info.z_index,
             transform: info.rotate ? `rotate(${info.rotate}deg)` : 'rotate(0deg)',
             padding: info.padding + 'px',
-            color: info.color,
             opacity: info.opacity
         }}
             className='absolute group hover:border-[2px] hover:border-indigo-500'
         >
             <Element id={randValue} info={info} exId="" />
-            <h2 style={{fontSize: info.font + 'px', fontWeight: info.weight }} className='w-full h-full'>{info.title}</h2>
+            <h2 style={{fontSize: info.font + 'px', fontWeight: info.weight, color: info.color }} className='w-full h-full'>{info.title}</h2>
             {
                 current_component.id === info.id && <div onClick={() => removeComponent(info.id)} className='px-3 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md'>
                     <BsTrash/>

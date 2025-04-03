@@ -44,7 +44,7 @@ const designModel = require("../models/designModel");
 
 class DesignController {
     create_user_design = async (req, res) => {
-        console.log("Design controller loaded");
+        
         const form = formidable();
         const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
 
@@ -79,6 +79,53 @@ class DesignController {
             return res.status(500).json({ message: error.message });
         }
     };
+
+    update_user_design = async (req, res) => {
+        const form = formidable();
+        const { designId } = req.params // Preluăm ID-ul design-ului din parametrii URL-ului
+
+        try {
+            cloudinary.config({
+                cloud_name: process.env.cloud_name,
+                api_key: process.env.api_key,
+                api_secret: process.env.api_secret,
+            });
+
+            const [fields, files] = await form.parse(req);
+            const { image } = files;
+            const components = JSON.parse(fields.design[0]).design;      // Preluăm componentele din design
+
+            const old_design = await designModel.getDesignById(designId); // Găsim design-ul vechi în baza de date folosind functia getDesignById din designModel
+            
+            if(old_design){
+                if(old_design.imageUrl){
+                    const splitImage = old_design.imageUrl.split('/');
+                    const imageFile = splitImage[splitImage.length - 1];
+                    const imageName = imageFile.split('.')[0];
+                    await cloudinary.uploader.destroy(imageName); // Ștergem imaginea veche din Cloudinary
+                }
+
+                const { url } = await cloudinary.uploader.upload(image[0].filepath); // Încărcăm imaginea nouă în Cloudinary
+
+                // await designModel.findByIdAndUpdate(designId, {
+                //     imageUrl: url,
+                //     components
+                // })
+                await designModel.updateDesignById(designId, {
+                    imageUrl: url,
+                    components,
+                    updatedAt: new Date()
+                });
+
+                return res.status(200).json({ message: "Image saved successfully" });
+
+            }else{
+                return res.status(404).json({ message: "Design not found" }); // În caz de eroare, returnăm un mesaj de eroare
+            }
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
 
     get_user_design = async (req, res) => {
         const { designId } = req.params;  // Preluăm ID-ul design-ului din parametrii URL-ului
