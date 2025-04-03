@@ -44,7 +44,7 @@ const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele
     element: <CreateDesign />   //element → Componenta care va fi randata.
   },
   {
-    path: "/design/:id/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
+    path: "/design/:designId/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
     element: <Main />
    }
 ])

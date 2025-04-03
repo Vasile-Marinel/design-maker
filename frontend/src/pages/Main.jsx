@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {use, useEffect, useState} from "react";
 import Header from "../components/Header";
+import { useParams } from "react-router-dom";
 import { BsGrid1X2, BsFillImageFill, BsFolder, BsCloudUploadFill, BsQrCode} from "react-icons/bs";
 import { FaShapes } from "react-icons/fa";
 import { TfiText } from "react-icons/tfi";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { RxTransparencyGrid } from "react-icons/rx";
-import { set } from "mongoose";
 import TemplateDesign from "../components/main/TemplateDesign";
 import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
@@ -13,9 +13,11 @@ import Image from "../components/Image";
 import {QRCodeCanvas} from "qrcode.react";
 import CreateComponent from "../components/CreateComponent";
 import { parse } from "dotenv";
+import api from "../utils/api";
 
 const Main = () => {
 
+    const { designId } = useParams()
     const [state, setState] = useState('')
     const [current_component, setCurrentComponent] = useState('')
     const [color, setColor] = useState('')
@@ -299,6 +301,28 @@ const Main = () => {
     }, [color, image, left, top, width, height, opacity, zIndex, padding, font, weight, text, radius])
 
     const [qrText, setQrText] = useState("");
+
+    useEffect(() => {
+        const get_design = async () => {
+            try {
+                const {data} = await api.get(`/api/user-design/${designId}`)
+                const {design} = data
+
+                for(let i = 0; i < design.length; i++){
+                    design[i].setCurrentComponent = (a) => setCurrentComponent(a)
+                    design[i].moveElement = moveElement
+                    design[i].resizeElement = resizeElement
+                    design[i].rotateElement = rotateElement
+                    design[i].remove_background = remove_background
+                }
+
+                setComponents(design)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        get_design()
+    }, [designId])
 
     return (
         <div className='min-w-screen h-screen bg-black'>

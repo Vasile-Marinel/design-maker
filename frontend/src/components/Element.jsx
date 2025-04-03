@@ -22,10 +22,17 @@ const Element = ({ id, info, exId }) => {
                         </div>
                     </>
             }
-            <div onMouseDown={() => info.resizeElement(id, info)} className='hidden absolute group-hover:block -top-[3px] -left-[3px] w-[10px] h-[10px] cursor-nwse-resize bg-green-500 z-[99999]'>
+            {/* <div onMouseDown={() => info.rotateElement(id, info)} className='hidden absolute group-hover:block -top-[3px] -left-[3px] w-[10px] h-[10px] cursor-nwse-resize bg-green-500 z-[99999]'>
+                <TbRefresh />
             </div>
 
             <div onMouseDown={() => info.rotateElement(id, info)} className='w-[25px] flex absolute justify-center cursor-pointer left-[50%] -translate-x-[50%] -top-14 items-center hover:bg-indigo-600 hover:text-white h-[25px] rounded-full border-2 border-slate-500'>
+                <TbRefresh />
+            </div> */}
+            <div
+                onMouseDown={() => info.rotateElement(id, info)}
+                className='hidden absolute group-hover:flex w-[20px] h-[20px] justify-center items-center cursor-pointer -top-[11px] -left-[11px] hover:bg-indigo-600 hover:text-white rounded-full border-2 border-slate-500 z-[99999]'
+            >
                 <TbRefresh />
             </div>
 

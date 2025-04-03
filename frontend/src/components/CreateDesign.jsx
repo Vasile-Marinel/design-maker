@@ -49,7 +49,7 @@ const CreateDesign = () => {
         //if (!ref.current) return; // Verificăm dacă ref-ul este valid
         const image = await htmlToImage.toBlob(ref.current)     //converteste elementul DOM in imagine
 
-        const design = JSON.stringify(obj)     //converteste elementul DOM in JSON
+        const design = JSON.stringify([obj])     //converteste elementul DOM in JSON
 
         if (image) {
             const formData = new FormData()     //FormData este folosit pentru a trimite datele catre server

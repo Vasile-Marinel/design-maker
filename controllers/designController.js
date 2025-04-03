@@ -79,6 +79,17 @@ class DesignController {
             return res.status(500).json({ message: error.message });
         }
     };
+
+    get_user_design = async (req, res) => {
+        const { designId } = req.params;  // Preluăm ID-ul design-ului din parametrii URL-ului
+        
+        try {
+            const design = await designModel.getDesignById(designId); // Găsim design-ul în baza de date folosind functia getDesignById din designModel
+            return res.status(200).json({ design : Object.values(design.components) }); // Returnăm design-ul găsit
+        } catch (error) {
+            return res.status(500).json({ message: error.message }); // În caz de eroare, returnăm un mesaj de eroare
+        }
+    }
 }
 
 module.exports = new DesignController();

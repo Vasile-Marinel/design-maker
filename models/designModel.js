@@ -31,6 +31,22 @@ class DesignModel {
             throw new Error("Failed to create design: " + error.message);
         }
     }
+
+    async getDesignById(designId) {
+        try {
+            const designRef = db.collection("designs").doc(designId);
+            const doc = await designRef.get();
+    
+            if (!doc.exists) {
+                throw new Error("Design not found");
+            }
+    
+            return { id: doc.id, ...doc.data() };
+        } catch (error) {
+            throw new Error("Failed to fetch design: " + error.message);
+        }
+    }
+    
 }
 
 module.exports = new DesignModel();

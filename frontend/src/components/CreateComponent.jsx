@@ -35,7 +35,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
         >
             <Element id={randValue} info={info} exId="" />
             {
-                current_component.id === info.id && <div onClick={() => removeComponent(info.id)} className='px-3 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md'>
+                current_component.id === info.id && <div onClick={() => removeComponent(info.id)} className='top-[3px] left-[3px] px-3 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md'>
                     <BsTrash/>
                 </div>
             }
