@@ -391,7 +391,7 @@ const Main = () => {
                         }
 
                         {
-                            state === 'image' && <MyImages/>
+                            state === 'image' && <MyImages add_image={add_image}/>
                         }
 
                         {
