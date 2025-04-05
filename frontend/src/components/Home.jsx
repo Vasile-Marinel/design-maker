@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Carousel from 'react-multi-carousel';    //un slider/carousel pentru afisarea designurilor recente
 import 'react-multi-carousel/lib/styles.css';
-import { Link, useNavigate } from 'react-router-dom';       //useNavigate → permite navigarea programatica catre alta pagina
-import { FaTrash } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';       //useNavigate → permite navigarea programatica catre alta pagina
+import api from '../utils/api';     //Importa api-ul pentru a face cereri catre server
+import Item from '../components/Home/Item';     //Importa componenta Item pentru a afisa designurile recente
 
 const Home = () => {
 
+    const [designs, setDesign] = useState([]) //design → retine designurile recente
     const navigate = useNavigate()
     const [state, setState] = useState({    //state.width și state.height → retin valorile introduse de utilizator pentru dimensiuni personalizate
         width: 0,
@@ -57,6 +59,18 @@ const Home = () => {
         })
     }
 
+    useEffect(() => {
+        const get_user_design = async () => {
+            try {
+                const { data } = await api.get('/api/user-designs') //apeleaza api-ul pentru a obtine designurile recente ale utilizatorului
+                setDesign(data.designs) //setam imaginile in state-ul images
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        get_user_design()
+    }, [])
+
     return (
         <div className='pt-5'>
             <div className='w-full flex justify-center items-center h-[250px] bg-gradient-to-r from-[#4c76cf] to-[#552ab8] relative rounded-md overflow-hidden'>
@@ -88,12 +102,7 @@ const Home = () => {
                         transitionDuration={500}
                     >
                         {
-                            [1, 2, 3, 4, 5, 6, 7, 8].map((d, i) => <div className='relative group w-full h-[220px] px-2' key={i}>   {/* Afiseaza 8 designuri recente intr-un carousel*/}
-                                <Link className='w-full h-full block bg-[#ffffff12] p-4 rounded-md'>
-                                    <img className='w-full h-full rounded-md overflow-hidden' src="http://localhost:5173/project.png" alt="" />
-                                </Link>
-                                <div className='absolute hidden cursor-pointer top-1 right-2 text-red-500 p-2 transition-all duration-500 group-hover:block'><FaTrash /></div>
-                            </div>)
+                            designs.map((d, i) => <Item design={d} key={i} />)
                         }
                     </Carousel>
                 </div>

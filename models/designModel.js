@@ -56,6 +56,24 @@ class DesignModel {
             throw new Error("Failed to update design: " + error.message);
         }
     }
+
+    async getDesignsByUserId(userId) {
+        try {
+            const snapshot = await db.collection("designs")
+                .where("userId", "==", userId)
+                .orderBy("createdAt", "desc")       // ordonare descrescătoare după data creării pentru a obține cele mai recente designuri in pagina de Home
+                .get();
+    
+            const designs = [];
+            snapshot.forEach(doc => {
+                designs.push({ id: doc.id, ...doc.data() });
+            });
+    
+            return designs;
+        } catch (error) {
+            throw new Error("Failed to fetch designs: " + error.message);
+        }
+    }
     
 }
 

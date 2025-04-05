@@ -197,6 +197,17 @@ class DesignController {
             return res.status(500).json({ message: error.message });
         }
     }
+
+    get_user_designs = async (req, res) => {
+        const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
+
+        try {
+            const designs = (await designModel.getDesignsByUserId(uid)); // Obținem imaginile utilizatorului din baza de date
+            return res.status(200).json({ designs });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = new DesignController();
