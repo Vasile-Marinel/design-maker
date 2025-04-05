@@ -9,4 +9,7 @@ router.put('/update-user-design/:designId', auth, designController.update_user_d
 router.post('/upload-user-image', auth, designController.upload_user_image) // Ruta pentru încărcarea unei imagini de utilizator
 router.get('/get-user-image', auth, designController.get_user_image)
 
+router.get('/design-images', auth, designController.get_initial_image)
+router.get('/background-images', auth, designController.get_background_image)
+
 module.exports = router

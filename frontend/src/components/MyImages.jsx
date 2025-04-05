@@ -3,9 +3,8 @@ import Image from './Image'
 import api from '../utils/api'
 import SyncLoader from 'react-spinners/SyncLoader'
 import toast from 'react-hot-toast'
-import { set } from 'mongoose'
 
-const MyImages = ({add_image}) => {
+const MyImages = ({ add_image }) => {
 
     const [uploading, setUploading] = useState(false);
     const [images, setImages] = useState([])
@@ -52,8 +51,11 @@ const MyImages = ({add_image}) => {
                     <SyncLoader color='#fff' />
                 </div>
             }
-            <div className='h-[85vh] overflow-x-auto flex justify-start items-start scrollbar-hide'>
-                <Image add_image={add_image} images={images}/>
+            <div className="mt-8">
+
+                <div className='h-[70vh] overflow-y-auto scrollbar-hide'>
+                    <Image add_image={add_image} images={images} />
+                </div>
             </div>
         </div>
     )

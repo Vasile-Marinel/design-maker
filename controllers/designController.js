@@ -43,6 +43,9 @@ const cloudinary = require("cloudinary").v2;
 const designModel = require("../models/designModel");
 const userImageModel = require("../models/userImageModel");
 
+const designImageModel = require("../models/designImageModel");
+const backgroundModel = require("../models/backgroundModel");
+
 class DesignController {
     create_user_design = async (req, res) => {
 
@@ -171,6 +174,24 @@ class DesignController {
         const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
         try {
             const images = await userImageModel.getUserImages(uid); // Obținem imaginile utilizatorului din baza de date
+            return res.status(200).json({ images });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    get_initial_image = async (req, res) => {
+        try {
+            const images = await designImageModel.getAllDesignImages(); // Obținem imaginile utilizatorului din baza de date
+            return res.status(200).json({ images });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    get_background_image = async (req, res) => {
+        try {
+            const images = await backgroundModel.getAllBackgroundImages(); // Obținem imaginile utilizatorului din baza de date
             return res.status(200).json({ images });
         } catch (error) {
             return res.status(500).json({ message: error.message });
