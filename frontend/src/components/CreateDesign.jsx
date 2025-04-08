@@ -29,18 +29,14 @@ const CreateDesign = () => {
     //     image: ""
     // }
     const obj = {
-        //components: { // Aici trebuie să includem componentele ca un map
-        //main_frame: {
         name: "main_frame",
         type: "rect",
-        id: Math.floor((Math.random() * 100) + 1),
+        id: Date.now(), // Generăm un ID unic folosind timestamp-ul curent
         height: state.height,
         width: state.width,
         z_index: 1,
         color: "#fff",
         image: "",
-        //}
-        //}
     };
 
     const [loader, setLoader] = useState(false)     //loader este folosit pentru a afisa un loader rotativ in timpul procesului de salvare a design-ului

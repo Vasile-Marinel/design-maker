@@ -19,11 +19,11 @@ const MyImages = ({ add_image }) => {
                 setLoader(true) //setLoader seteaza loader-ul la true pentru a afisa loader-ul rotativ
                 const { data } = await api.post('/api/upload-user-image', formData)
                 setImages([...images, data.userImage]) //adaugam imaginea in array-ul de imagini
-                toast.success('Imaginea a fost încărcată cu succes!') //afiseaza un mesaj de succes
+                toast.success('Image uploaded successfully!') //afiseaza un mesaj de succes
                 setLoader(false)
             } catch (error) {
                 setLoader(false)     //setLoader seteaza loader-ul la false pentru a ascunde loader-ul rotativ
-                toast.error('Eroare la încărcarea imaginii!')     //afiseaza un mesaj de eroare
+                toast.error('Error loading image!')     //afiseaza un mesaj de eroare
             }
         }
     }

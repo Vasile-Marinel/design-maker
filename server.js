@@ -130,6 +130,7 @@ app.use(cors({
 }));
 
 // 🧭 Rute API
+app.use("/api", require("./routes/authRoutes"));
 app.use('/api', require('./routes/designRouts'));
 // app.use('/api', require('./routes/authRoutes')); // activează dacă ai rute de autentificare
 

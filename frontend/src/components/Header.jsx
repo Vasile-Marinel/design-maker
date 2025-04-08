@@ -27,11 +27,11 @@ const Header = ( {components, designId} ) => {
             try {
                 setLoader(true)     //setLoader seteaza loader-ul la true pentru a afisa loader-ul rotativ
                 const { data } = await api.put(`/api/update-user-design/${designId}`, formData)
-                toast.success('Design-ul a fost salvat cu succes!') //afiseaza un mesaj de succes
+                toast.success('The design was saved successfully!') //afiseaza un mesaj de succes
                 setLoader(false)     //setLoader seteaza loader-ul la false pentru a ascunde loader-ul rotativ
             } catch (error) {
                 setLoader(false)     //setLoader seteaza loader-ul la false pentru a ascunde loader-ul rotativ
-                toast.error('Eroare la salvarea design-ului!') //afiseaza un mesaj de eroare
+                toast.error('Error saving design!') //afiseaza un mesaj de eroare
             }
         }
     }

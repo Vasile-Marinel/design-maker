@@ -25,10 +25,10 @@ const Projects = ({ type, designId }) => {
     const delete_design = async (designId) => {
         try {
             const { data } = await api.put(`/api/delete-user-design/${designId}`)
-            toast.success('Design-ul a fost șters cu succes!') //afiseaza un mesaj de succes
+            toast.success('The design was successfully deleted!') //afiseaza un mesaj de succes
             get_user_design() //apeleaza din nou functia pentru a obtine designurile recente ale utilizatorului dupa ce a fost sters un design
         } catch (error) {
-            toast.error('Eroare la ștergerea design-ului!')     //afiseaza un mesaj de eroare
+            toast.error('Error deleting design!')     //afiseaza un mesaj de eroare
         }
     }
 

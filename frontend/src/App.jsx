@@ -5,6 +5,7 @@
 import {  
   createBrowserRouter,
   RouterProvider,
+  Navigate
 } from "react-router-dom";    //createBrowserRouter → Creeaza rutele aplicatiei. RouterProvider → Ofera router-ul intregii aplicatii.
 //Importam paginile si componentele necesare (Home, Projects, Templates, etc.).
 import Index from './pages/Index'
@@ -15,6 +16,7 @@ import Templates from "./components/Templates";
 import CreateDesign from "./components/CreateDesign";
 import Main from "./pages/Main";
 import {token_decode} from './utils/index'
+import Settings from './components/Settings'
 
 // Verifică dacă utilizatorul este autentificat
 const token = localStorage.getItem('user_token');
@@ -41,11 +43,15 @@ const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele
   },
   {
     path: "/design/create",     //path → Calea catre ruta.
-    element: <CreateDesign />   //element → Componenta care va fi randata.
+    element: userInfo ? <CreateDesign /> : <Navigate to='/' />  //Afiseaza CreateDesign (pentru crearea unui design). sau redirectioneaza catre pagina de login daca utilizatorul nu este autentificat.
   },
   {
     path: "/design/:designId/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
-    element: <Main />
+    element: userInfo ? <Main /> : <Navigate to='/' />    //Afisează Main (pentru editarea unui design, folosind un ID din URL). sau redirectioneaza catre pagina de login daca utilizatorul nu este autentificat.
+   },
+   {
+    path: "/settings",
+    element: userInfo ? <Settings /> : <Navigate to='/' />
    }
 ])
 

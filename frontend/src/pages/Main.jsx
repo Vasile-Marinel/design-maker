@@ -185,7 +185,7 @@ const Main = () => {
 
     const createShape = (name, type) => {
         const style = {
-            id: components.length + 1,
+            id: Date.now(),
             name: name,
             type,
             left: 10,
@@ -206,7 +206,7 @@ const Main = () => {
 
     const add_text = (name, type) => {
         const style = {
-            id: components.length + 1,
+            id: Date.now(),
             name: name,
             type,
             left: 10,
@@ -232,8 +232,9 @@ const Main = () => {
     }
 
     const add_image = (img) => {
+        setCurrentComponent('')
         const style = {
-            id: components.length + 1,
+            id: Date.now(),
             name: 'image',
             type: 'image',
             left: 10,
@@ -458,7 +459,7 @@ const Main = () => {
                                             <input onChange={(e) => setColor(e.target.value)} type="color" className='invisible' id='color' />
                                         </div>
                                         {
-                                            (current_component.name==='main_frame' && image) && <div>
+                                            (current_component.name==='main_frame' && current_component.image) && <div>
                                                 <button className='p-[6px] bg-slate-700 text-white rounded-sm' onClick={remove_background}>Remove Background</button>
                                             </div>
                                         }

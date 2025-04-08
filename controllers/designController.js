@@ -46,6 +46,9 @@ const userImageModel = require("../models/userImageModel");
 const designImageModel = require("../models/designImageModel");
 const backgroundModel = require("../models/backgroundModel");
 const templateModel = require("../models/templateModel");
+const { db } = require('../firebaseAdmin');
+const admin = require('firebase-admin');
+
 
 class DesignController {
     create_user_design = async (req, res) => {
@@ -248,6 +251,7 @@ class DesignController {
             return res.status(500).json({ message: error.message });
         }
     }
+    
 }
 
 module.exports = new DesignController();
