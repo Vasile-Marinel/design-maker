@@ -1,4 +1,4 @@
-import React, {use, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../components/Header";
 import { useParams } from "react-router-dom";
 import { BsGrid1X2, BsFillImageFill, BsFolder, BsCloudUploadFill, BsQrCode} from "react-icons/bs";
@@ -9,10 +9,8 @@ import { RxTransparencyGrid } from "react-icons/rx";
 import TemplateDesign from "../components/main/TemplateDesign";
 import MyImages from "../components/MyImages";
 import Projects from "../components/Projects";
-import Image from "../components/Image";
 import {QRCodeCanvas} from "qrcode.react";
 import CreateComponent from "../components/CreateComponent";
-import { parse } from "dotenv";
 import api from "../utils/api";
 import InitialImage from "../components/InitialImage";
 import BackgroundImages from "../components/BackgroundImages";

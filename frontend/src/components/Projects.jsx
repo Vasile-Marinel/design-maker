@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'     //Link din react-router-dom → permite navigarea intre pagini fara reincarcarea aplicatiei
 import Item from '../components/Home/Item';     //Importa componenta Item pentru a afisa designurile recente
 import api from '../utils/api';     //Importa api-ul pentru a face cereri catre server
 import toast from 'react-hot-toast';     //Importa toast pentru a afisa mesaje de succes sau eroare

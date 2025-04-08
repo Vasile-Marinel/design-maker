@@ -2,10 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import * as htmlToImage from 'html-to-image'  //importa html-to-image pentru a converti un element HTML in imagine
 import { useLocation, useNavigate } from 'react-router-dom'
 import RotateLoader from 'react-spinners/RotateLoader'  //importa RotateLoader pentru a afisa un loader rotativ
-import { db } from 'C:\\Users\\vasil\\OneDrive\\Desktop\\AC_Informatica\\ANUL3\\Design_editor\\firebaseConfig.js'; // Importăm configurările Firebase
-import { collection, addDoc } from '@firebase/firestore';
-import { ref, uploadBytesResumable, getDownloadURL } from '@firebase/storage';
-import { getAuth } from '@firebase/auth'; // Importăm getAuth din Firebase
 
 import CreateComponent from './CreateComponent'
 import api from '../utils/api'
@@ -18,16 +14,6 @@ const CreateDesign = () => {
 
     const navigate = useNavigate()     //useNavigate este folosit pentru a naviga catre o alta pagina
 
-    // const obj = {     //acest obiect (obj) defineste un element grafic
-    //     name: "main_frame",   //numele obiectului
-    //     type: "rect",   //tipul obiectului, in cazul de fata un dreptunghi
-    //     id: Math.floor((Math.random() * 100) + 1),      //un id unic generat aleator
-    //     height: state.height,       //inaltimea si latimea obiectului
-    //     width: state.width,
-    //     z_index: 1,     //z-index-ul obiectului, adica ordinea de afisare
-    //     color: "#fff",
-    //     image: ""
-    // }
     const obj = {
         name: "main_frame",
         type: "rect",
@@ -62,98 +48,6 @@ const CreateDesign = () => {
                 console.log(error.response.data)
             }
         }
-
-
-        //     const image = await htmlToImage.toBlob(ref.current);
-        // const design = JSON.stringify(obj);
-
-        // if (image) {
-        //     const formData = new FormData();
-        //     formData.append("design", design);
-        //     formData.append("image", image);
-        //     formData.append("userId", getAuth().currentUser.uid);
-        //     console.log(getAuth().currentUser.uid)
-
-        //     try {
-        //         setLoader(true);
-        //         const { data } = await api.post("/api/create-user-design", formData);
-        //         navigate(`/design/${data.designId}/edit`);
-        //     } catch (error) {
-        //         console.log(error.response.data);
-        //     }
-        // }
-
-
-
-
-        //     const image = await htmlToImage.toBlob(ref.current);
-        //     //const design = JSON.stringify(obj);
-        //     console.log(image)
-
-        //     if (image) {
-        //         const formData = new FormData();
-        //         formData.append('design', design);
-        //         formData.append('image', image);
-
-        //         try {
-        //             setLoader(true);
-
-        //             // Obținem utilizatorul curent autentificat
-        //             const user = getAuth().currentUser;
-
-        //             if (!user) {
-        //                 // Dacă nu este autentificat, redirecționăm la login
-        //                 navigate('/login');
-        //                 return;
-        //             }
-
-        //             // Crearea unui nou design în Firestore, asociat cu ID-ul utilizatorului
-        //             const docRef = await addDoc(collection(db, "designs"), {
-        //                 // designData: design,
-        //                 // width: state.width,
-        //                 // height: state.height,
-        //                 // createdAt: new Date(),
-        //                 // updatedAt: new Date(),
-        //                 // userId: user.uid,  // Salvăm ID-ul utilizatorului în design
-        //                 components: obj.components, // Salvăm obiectul ca un map
-        //                 createdAt: new Date(),
-        //                 updatedAt: new Date(),
-        //                 userId: user.uid,
-        //             });
-
-
-        //             // Salvăm imaginea în Firebase Storage
-        //             const imageRef = ref(storage, `designs/${docRef.id}.png`);
-        //             const uploadTask = uploadBytesResumable(imageRef, image);
-
-        //             uploadTask.on(
-        //                 "state_changed",
-        //                 (snapshot) => {
-        //                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        //                     console.log('Upload is ' + progress + '% done');
-        //                 },
-        //                 (error) => {
-        //                     console.log(error);
-        //                     setLoader(false);
-        //                 },
-        //                 async () => {
-        //                     const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        //                     console.log('File available at', downloadURL);
-
-        //                     // **Actualizăm documentul existent cu URL-ul imaginii**
-        //                     await updateDoc(doc(db, "designs", docRef.id), {
-        //                         imageUrl: downloadURL,
-        //                     });
-
-        //                     // Navigăm către pagina de editare a design-ului
-        //                     navigate(`/design/${docRef.id}/edit`);
-        //                 }
-        //             );
-        //         } catch (error) {
-        //             console.log(error);
-        //             setLoader(false);
-        //         }
-        //     }
     }
 
     useEffect(() => {
