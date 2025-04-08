@@ -45,6 +45,7 @@ const userImageModel = require("../models/userImageModel");
 
 const designImageModel = require("../models/designImageModel");
 const backgroundModel = require("../models/backgroundModel");
+const templateModel = require("../models/templateModel");
 
 class DesignController {
     create_user_design = async (req, res) => {
@@ -204,6 +205,45 @@ class DesignController {
         try {
             const designs = (await designModel.getDesignsByUserId(uid)); // Obținem imaginile utilizatorului din baza de date
             return res.status(200).json({ designs });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    delete_user_design = async (req, res) => {
+        const { designId } = req.params; // Preluăm ID-ul design-ului din parametrii URL-ului
+
+        try {
+            await designModel.deleteDesignById(designId); // Ștergem design-ul din baza de date folosind functia deleteDesignById din designModel
+            return res.status(200).json({ message: "Design deleted successfully" }); // Returnăm un mesaj de succes
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    get_templates = async (req, res) => {
+        try {
+            const templates = (await templateModel.getAllTemplates()); // Obținem imaginile utilizatorului din baza de date
+            return res.status(200).json({ templates });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
+
+    add_user_template = async (req, res) => {
+        const { template_id } = req.params;
+        const { uid } = req.user;   // Preluăm UID-ul utilizatorului autentificat din token
+
+        try {
+            const template = (await templateModel.getTemplateById(template_id)); // Obținem imaginile utilizatorului din baza de date
+            const design = await designModel.createDesign({
+                userId: uid,
+                components: template.components,
+                imageUrl: template.imageUrl,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+            })
+            return res.status(200).json({ design });
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }

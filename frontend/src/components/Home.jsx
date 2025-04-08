@@ -4,6 +4,7 @@ import 'react-multi-carousel/lib/styles.css';
 import { useNavigate } from 'react-router-dom';       //useNavigate → permite navigarea programatica catre alta pagina
 import api from '../utils/api';     //Importa api-ul pentru a face cereri catre server
 import Item from '../components/Home/Item';     //Importa componenta Item pentru a afisa designurile recente
+import toast from 'react-hot-toast';
 
 const Home = () => {
 
@@ -59,17 +60,29 @@ const Home = () => {
         })
     }
 
-    useEffect(() => {
-        const get_user_design = async () => {
-            try {
-                const { data } = await api.get('/api/user-designs') //apeleaza api-ul pentru a obtine designurile recente ale utilizatorului
-                setDesign(data.designs) //setam imaginile in state-ul images
-            } catch (error) {
-                console.log(error)
-            }
+    const get_user_design = async () => {
+        try {
+            const { data } = await api.get('/api/user-designs') //apeleaza api-ul pentru a obtine designurile recente ale utilizatorului
+            setDesign(data.designs) //setam imaginile in state-ul images
+        } catch (error) {
+            console.log(error)
         }
+    }
+
+    useEffect(() => {
+        
         get_user_design()
     }, [])
+
+    const delete_design = async (designId) => {
+        try {
+            const { data } = await api.put(`/api/delete-user-design/${designId}`)
+            toast.success('Design-ul a fost șters cu succes!')      //afiseaza un mesaj de succes
+            get_user_design()       //apeleaza din nou functia pentru a obtine designurile recente ale utilizatorului dupa ce a fost sters un design
+        } catch (error) {
+            toast.error('Eroare la ștergerea design-ului!')     //afiseaza un mesaj de eroare
+        }
+    }
 
     return (
         <div className='pt-5'>
@@ -102,7 +115,7 @@ const Home = () => {
                         transitionDuration={500}
                     >
                         {
-                            designs.map((d, i) => <Item design={d} key={i} />)
+                            designs.map((d, i) => <Item delete_design={delete_design} design={d} key={i} />)
                         }
                     </Carousel>
                 </div>

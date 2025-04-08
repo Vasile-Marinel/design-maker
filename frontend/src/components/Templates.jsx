@@ -1,8 +1,12 @@
 import React from 'react'
+import TemplateDesign from './main/TemplateDesign'
 
 const Templates = () => {
+
     return (
-        <div>Templates</div>
+        <div>
+            <TemplateDesign/>
+        </div>
     )
 }
 

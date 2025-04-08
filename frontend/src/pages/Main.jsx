@@ -376,9 +376,7 @@ const Main = () => {
                         <div onClick={() => setShow({name : '', status : true})} className='flex absolute justify-center items-center bg-[#252627] w-[20px] -right-2 text-slate-300 top-[40%] cursor-pointer h-[100px] rounded-full'>< MdKeyboardArrowLeft /></div>
                         {
                             state === 'design' && <div>
-                                <div className='grid grid-cols-2 gap-2'>
-                                    <TemplateDesign/>
-                                </div>
+                                <TemplateDesign type="main"/>
                             </div>
                         }
 
@@ -407,7 +405,7 @@ const Main = () => {
                         }
 
                         {
-                            state === 'project' && <Projects/>
+                            state === 'project' && <Projects type='projects' designId={designId} />
                         }
 
                         {

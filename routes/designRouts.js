@@ -14,4 +14,9 @@ router.get('/background-images', auth, designController.get_background_image)
 
 router.get('/user-designs', auth, designController.get_user_designs)
 
+router.put('/delete-user-design/:designId', auth, designController.delete_user_design) // Ruta pentru încărcarea unei imagini de utilizator
+
+router.get('/templates', auth, designController.get_templates)
+router.get('/add-user-template/:template_id', auth, designController.add_user_template)
+
 module.exports = router

@@ -74,6 +74,16 @@ class DesignModel {
             throw new Error("Failed to fetch designs: " + error.message);
         }
     }
+
+    async deleteDesignById(designId) {
+        try {
+            const designRef = db.collection("designs").doc(designId);
+            await designRef.delete();
+            return true;
+        } catch (error) {
+            throw new Error("Failed to delete design: " + error.message);
+        }
+    }
     
 }
 
