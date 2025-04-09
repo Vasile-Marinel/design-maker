@@ -12,6 +12,9 @@ const Settings = () => {
     const [password, setPassword] = useState('')
     const [image, setImage] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState('');
+
 
     const goToHome = () => {
         navigate('/');
@@ -47,11 +50,26 @@ const Settings = () => {
     }
 
     const updatePassword = async () => {
+        if (!currentPassword || !password) {
+            toast.error("Fill in both password fields!");
+            return;
+        }
+    
         try {
-            await api.put('/api/update-password', { password })
-            toast.success('Parola a fost schimbată!')
+            const res = await api.put('/api/update-password', {
+                currentPassword,
+                newPassword: password,
+            });
+    
+            if (res.data.success) {
+                toast.success('Password changed successfully!');
+                setCurrentPassword('');
+                setPassword('');
+            } else {
+                toast.error(res.data.message || 'The password could not be changed!');
+            }
         } catch (err) {
-            toast.error('Eroare la schimbarea parolei!')
+            toast.error('Error changing password!');
         }
     }
 
@@ -74,6 +92,25 @@ const Settings = () => {
             <button onClick={updateProfile} className='bg-purple-600 px-4 py-2 rounded text-white mr-3'>
                 Save Profile
             </button>
+
+            <div className='mt-6 mb-3'>
+                <label>Current Password</label>
+                <br />
+                <div className="relative w-[400px]">
+                    <input
+                        type={showCurrentPassword ? "text" : "password"}
+                        value={currentPassword}
+                        onChange={e => setCurrentPassword(e.target.value)}
+                        className='w-full px-3 py-2 rounded bg-[#2c2c2c] mt-1 pr-10'
+                    />
+                    <span
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        className="absolute right-3 top-[16px] text-gray-400 cursor-pointer"
+                    >
+                        {showCurrentPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                    </span>
+                </div>
+            </div>
 
             <div className='mt-6 mb-3'>
                 <label>New Password</label>

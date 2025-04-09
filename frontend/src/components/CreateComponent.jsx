@@ -1,6 +1,7 @@
 import React from 'react'
 import {BsTrash} from 'react-icons/bs'
 import Element from './Element'
+import { QRCodeCanvas } from 'qrcode.react';
 
 const CreateComponent = ({ info, current_component, removeComponent }) => {
 
@@ -141,6 +142,39 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
             }
         </div>
     }
+
+    if (info.name === 'qr') {
+        html = <div id={randValue} onClick={() => info.setCurrentComponent(info)} style={{
+            left: info.left + 'px',
+            top: info.top + 'px',
+            zIndex: info.z_index,
+            transform: info.rotate ? `rotate(${info.rotate}deg)` : 'rotate(0deg)',
+            opacity: info.opacity
+        }}
+            className='absolute group hover:border-[2px] hover:border-indigo-500'
+        >
+            <Element id={randValue} info={info} exId={`${randValue}-qr`} />
+            <div id={`${randValue}-qr`} style={{
+                width: info.width + 'px',
+                height: info.height + 'px',
+                background: 'white',
+                padding: '4px'
+            }}>
+                <QRCodeCanvas value={info.text || ''} size={info.width - 8} />
+            </div>
+            {
+                current_component.id === info.id && (
+                    <div
+                        onClick={() => removeComponent(info.id)}
+                        className='px-3 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md'
+                    >
+                        <BsTrash />
+                    </div>
+                )
+            }
+        </div>
+    }
+    
 
     return html
 }

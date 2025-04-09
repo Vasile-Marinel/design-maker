@@ -6,7 +6,6 @@ import toast from 'react-hot-toast'
 
 const MyImages = ({ add_image }) => {
 
-    const [uploading, setUploading] = useState(false);
     const [images, setImages] = useState([])
     const [loader, setLoader] = useState(false)
 

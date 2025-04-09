@@ -1,5 +1,7 @@
 const { db } = require("../firebaseAdmin");;
 const admin = require('firebase-admin');
+const axios = require('axios');
+require('dotenv').config();
 
 class AuthController{
     get_user_profile = async (req, res) => {
@@ -19,9 +21,6 @@ class AuthController{
       update_user_profile = async (req, res) => {
         const { uid } = req.user;
         const { username, image } = req.body;
-
-        console.log("🔄 Actualizare profil pentru uid:", uid);
-        console.log("📤 Date primite:", { username, image });
       
         try {
           const userRef = db.collection('users').doc(uid);
@@ -33,23 +32,34 @@ class AuthController{
       };
       
       update_password = async (req, res) => {
-        const { uid } = req.user;
-        const { password } = req.body;
-        console.log("🔄 Actualizare parolă pentru uid:", password);
-    
-        console.log("🔐 Schimbare parolă pentru:", uid);
-    
-        try {
-            const updatedUser = await admin.auth().updateUser(uid, {
-                password: password
-            });
-    
-            console.log("✅ Parolă actualizată:", updatedUser.email);
-            res.status(200).json({ message: "Parola a fost schimbată cu succes." });
-        } catch (err) {
-            console.error("❌ Eroare la schimbare parolă:", err);
-            res.status(500).json({ message: err.message });
+        const { currentPassword, newPassword } = req.body;
+    const { email, uid } = req.user;
+
+    try {
+        // 1. Reautentificare cu parola veche
+        const firebaseApiKey = process.env.FIREBASE_API_KEY; // 🛑 Asigură-te că ai setat această variabilă
+
+        const verifyPasswordUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseApiKey}`;
+        const response = await axios.post(verifyPasswordUrl, {
+            email,
+            password: currentPassword,
+            returnSecureToken: false
+        });
+
+        // 2. Dacă parola este corectă, facem update
+        await admin.auth().updateUser(uid, {
+            password: newPassword
+        });
+
+        res.status(200).json({ success: true, message: "Parola a fost schimbată cu succes." });
+    } catch (err) {
+        console.error("❌ Eroare la schimbare parolă:", err.response?.data || err.message);
+        if (err.response?.data?.error?.message === 'INVALID_PASSWORD') {
+            return res.status(401).json({ success: false, message: 'Parola curentă este incorectă.' });
         }
+
+        res.status(500).json({ success: false, message: "Eroare internă." });
+    }
     };
 }
 

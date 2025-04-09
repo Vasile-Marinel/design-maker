@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTrash } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';       //useNavigate → permite navigarea programatica catre alta pagina
+import { Link } from 'react-router-dom';
 
 
 const Item = ({ design, type, delete_design }) => {
