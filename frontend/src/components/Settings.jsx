@@ -3,6 +3,8 @@ import api from '../utils/api'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { token_decode } from "../utils/index";
+import default_profile_icon from "../assets/default_profile_icon.png";
 
 const Settings = () => {
 
@@ -15,6 +17,9 @@ const Settings = () => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
 
+    const token = localStorage.getItem('user_token');
+    const [firestoreUser, setFirestoreUser] = useState(null);
+    const userInfo = token_decode(token);
 
     const goToHome = () => {
         navigate('/');
@@ -27,6 +32,7 @@ const Settings = () => {
                 setUser(data.user)
                 setUsername(data.user.username || '')
                 setImage(data.user.image || '')
+                setFirestoreUser(data.user);
             } catch (err) {
                 console.error('Failed to fetch user profile', err)
             }
@@ -39,13 +45,12 @@ const Settings = () => {
         try {
             const payload = {
                 username,
-                image
             }
 
             await api.put('/api/update-user-profile', payload)
-            toast.success('Profil actualizat cu succes!')
+            toast.success('Profile successfully updated!')
         } catch (err) {
-            toast.error('Eroare la actualizarea profilului!')
+            toast.error('Error updating profile!')
         }
     }
 
@@ -54,13 +59,13 @@ const Settings = () => {
             toast.error("Fill in both password fields!");
             return;
         }
-    
+
         try {
             const res = await api.put('/api/update-password', {
                 currentPassword,
                 newPassword: password,
             });
-    
+
             if (res.data.success) {
                 toast.success('Password changed successfully!');
                 setCurrentPassword('');
@@ -73,9 +78,34 @@ const Settings = () => {
         }
     }
 
+    const handleImageUpload = async (e) => {
+        if (e.target.files.length > 0) {
+            const formData = new FormData();
+            formData.append('image', e.target.files[0]);
+
+            try {
+                const { data } = await api.post('/api/upload-user-image', formData);
+                const imageUrl = data.userImage.imageUrl;
+
+                // Actualizează în Firestore user.image
+                await api.put('/api/update-user-profile', {
+                    username, // păstrăm username-ul existent
+                    image: imageUrl
+                });
+
+                setImage(imageUrl);
+                toast.success('Profile picture has been updated!');
+            } catch (error) {
+                toast.error('Error loading image!');
+                console.log(error);
+            }
+        }
+    };
+
     return (
         <div className='p-5 text-white bg-[#18191b] min-h-screen justify-center items-center flex flex-col'>
             <h2 className='text-2xl mb-4'>Profile Settings</h2>
+            <img src={userInfo?.picture || firestoreUser?.image || default_profile_icon} className='w-[80px] h-[80px] rounded-full' alt="prfile" />
 
             <div className='mb-3'>
                 <label>New username</label>
@@ -84,12 +114,22 @@ const Settings = () => {
             </div>
 
             <div className='mb-3'>
-                <label>Profile icon (URL)</label>
+                {/* <label>Profile icon (URL)</label>
                 <br />
-                <input value={image} onChange={e => setImage(e.target.value)} className='w-[400px] px-3 py-2 rounded bg-[#2c2c2c] mt-1' />
+                <input value={image} onChange={e => setImage(e.target.value)} className='w-[400px] px-3 py-2 rounded bg-[#2c2c2c] mt-1' /> */}
+                <br />
+                <div className='w-[400px] h-[40px] flex justify-center items-center bg-purple-700 rounded-sm text-white cursor-pointer hover:bg-purple-500'>
+                    <label className='cursor-pointer' htmlFor="profile-icon-upload">Upload Profile Image</label>
+                    <input
+                        onChange={handleImageUpload}
+                        type="file"
+                        id="profile-icon-upload"
+                        className='hidden'
+                    />
+                </div>
             </div>
 
-            <button onClick={updateProfile} className='bg-purple-600 px-4 py-2 rounded text-white mr-3'>
+            <button onClick={updateProfile} className='bg-purple-700 px-4 py-2 rounded text-white mr-3 hover:bg-purple-500'>
                 Save Profile
             </button>
 
@@ -101,6 +141,7 @@ const Settings = () => {
                         type={showCurrentPassword ? "text" : "password"}
                         value={currentPassword}
                         onChange={e => setCurrentPassword(e.target.value)}
+                        placeholder="Current Password"
                         className='w-full px-3 py-2 rounded bg-[#2c2c2c] mt-1 pr-10'
                     />
                     <span
@@ -120,6 +161,7 @@ const Settings = () => {
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={e => setPassword(e.target.value)}
+                        placeholder="Password (6+ characters)"
                         className="w-full px-3 py-2 rounded bg-[#2c2c2c] mt-1 pr-10"
                     />
                     <span
@@ -131,7 +173,7 @@ const Settings = () => {
                 </div>
             </div>
 
-            <button onClick={updatePassword} className='bg-red-500 px-4 py-2 rounded text-white'>
+            <button onClick={updatePassword} className='bg-red-700 px-4 py-2 rounded text-white hover:bg-red-500'>
                 Change password
             </button>
 

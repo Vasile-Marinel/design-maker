@@ -52,7 +52,7 @@ const MyImages = ({ add_image }) => {
             }
             <div className="mt-8">
 
-                <div className='h-[70vh] overflow-y-auto scrollbar-hide'>
+                <div className='h-[80vh] overflow-y-auto scrollbar-hide'>
                     <Image add_image={add_image} images={images} />
                 </div>
             </div>
