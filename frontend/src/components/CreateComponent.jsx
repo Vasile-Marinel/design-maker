@@ -17,7 +17,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
                 zIndex: info.z_index
             }}>
             {
-                info.image && <img className='w-full h-full' src={info.image} alt='image' />
+                info.image && <img className='w-full h-full' src={info.image?.replace('http://', 'https://')} crossOrigin="anonymous" alt='image'/>
             }
         </div>
     }
@@ -133,7 +133,7 @@ const CreateComponent = ({ info, current_component, removeComponent }) => {
                 height: info.height + 'px',
                 borderRadius: `${info.radius}%`
             }}>
-                <img className='w-full h-full' src={info.image} alt='image' />
+                <img className='w-full h-full' src={info.image?.replace('http://', 'https://')} crossOrigin="anonymous" alt='image'/>
             </div>
             {
                 current_component.id === info.id && <div onClick={() => removeComponent(info.id)} className='px-3 bg-white absolute top-0 hidden group-hover:block cursor-pointer rounded-md'>

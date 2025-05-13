@@ -119,7 +119,7 @@ const Settings = () => {
                 <input value={image} onChange={e => setImage(e.target.value)} className='w-[400px] px-3 py-2 rounded bg-[#2c2c2c] mt-1' /> */}
                 <br />
                 <div className='w-[400px] h-[40px] flex justify-center items-center bg-purple-700 rounded-sm text-white cursor-pointer hover:bg-purple-500'>
-                    <label className='cursor-pointer' htmlFor="profile-icon-upload">Upload Profile Image</label>
+                    <label className='cursor-pointer' htmlFor="profile-icon-upload">Upload New Profile Image</label>
                     <input
                         onChange={handleImageUpload}
                         type="file"

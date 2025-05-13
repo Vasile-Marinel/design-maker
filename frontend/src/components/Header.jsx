@@ -3,6 +3,7 @@ import Logo from "../assets/Design-Maker.png";
 import { Link } from 'react-router-dom'
 import useDownloader from 'react-use-downloader' //importa useDownloader din react-use-downloader pentru a descarca imaginea
 import * as htmlToImage from 'html-to-image' //importa html-to-image pentru a converti un element HTML in imagine
+import html2canvas from 'html2canvas';
 import api from '../utils/api';
 import toast from 'react-hot-toast' //importa toast din react-hot-toast pentru a afisa notificari
 
