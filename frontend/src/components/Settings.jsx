@@ -87,9 +87,9 @@ const Settings = () => {
                 const { data } = await api.post('/api/upload-user-image', formData);
                 const imageUrl = data.userImage.imageUrl;
 
-                // Actualizează în Firestore user.image
+                // Actualizeaza in Firestore user.image
                 await api.put('/api/update-user-profile', {
-                    username, // păstrăm username-ul existent
+                    username, // pastram username-ul existent
                     image: imageUrl
                 });
 

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import {AiOutlineGoogle} from 'react-icons/ai'
 import Logo from "../assets/Design-Maker.png";
 import { signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@firebase/auth";
-import { auth, provider, db } from '../../../firebaseConfig'; // Importă autentificarea și provider-ul
+import { auth, provider, db } from '../../../firebaseConfig'; // Importa autentificarea si provider-ul
 import '../pages/Login.css';
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Importă Firestore
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Importa Firestore
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 
@@ -14,12 +14,12 @@ const loginWithGoogle = () => {
       const user = result.user;
       console.log("User info:", user);
       
-        // Obține token-ul ID după autentificare
+        // Obtine token-ul ID dupa autentificare
       const idToken = await user.getIdToken(true);
-      // Salvează token-ul în localStorage
+      // Salveaza token-ul in localStorage
       localStorage.setItem('user_token', idToken);
 
-      // Salvăm utilizatorul în Firestore dacă nu există deja
+      // Salvam utilizatorul in Firestore daca nu exista deja
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
@@ -29,13 +29,13 @@ const loginWithGoogle = () => {
               email: user.email,
               createdAt: new Date(),
               updatedAt: new Date(),
-              image: user.photoURL || ""  // Dacă utilizatorul are o imagine de profil din Google, o salvăm
+              image: user.photoURL || ""  // Daca utilizatorul are o imagine de profil din Google, o salvam
           });
           console.log("User info saved to Firestore!");
       } else {
           console.log("User already exists in Firestore.");
       }
-       // Redirecționează utilizatorul la pagina principală
+       // Redirectioneaza utilizatorul la pagina principala
        window.location.href = "/";
     })
     .catch((error) => {
@@ -49,13 +49,13 @@ const loginWithEmailPassword = (email, password, setShakeEmail, setShakePassword
             const user = userCredential.user;
             console.log("Logged in with email:", user);
 
-            // Obține token-ul ID după autentificare
+            // Obtine token-ul ID dupa autentificare
             const idToken = await user.getIdToken(true);
-            // Salvează token-ul în localStorage
+            // Salveaza token-ul in localStorage
             localStorage.setItem('user_token', idToken);
 
             setLoginError(''); // stergem eroarea daca login-ul reuseste
-            // Redirecționează utilizatorul la pagina principală
+            // Redirectioneaza utilizatorul la pagina principala
             window.location.href = "/";
         })
         .catch((error) => {
@@ -71,7 +71,7 @@ const loginWithEmailPassword = (email, password, setShakeEmail, setShakePassword
 };
 
 const registerWithEmailPassword = async (email, password, username, setShakeEmail, setShakePassword, setEmailError, setShakeUsername) => {
-    let hasError = false;       // Daca hasError este true, functia se oprește si nu mai incearcă sa autentifice sau sa inregistreze utilizatorul
+    let hasError = false;       // Daca hasError este true, functia se opreste si nu mai incearca sa autentifice sau sa inregistreze utilizatorul
     //Previne apelarea inutila a functiei Firebase daca deja stim ca datele sunt invalide
 
     if (!username.trim()) { // Verifica daca username-ul este gol
@@ -96,14 +96,14 @@ const registerWithEmailPassword = async (email, password, username, setShakeEmai
     if (hasError) return;
 
     try {
-        // Creează un utilizator cu email și parola
+        // Creeaza un utilizator cu email si parola
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         console.log("User created:", user);
 
-        // Obține token-ul ID după crearea utilizatorului
+        // Obtine token-ul ID dupa crearea utilizatorului
         const idToken = await user.getIdToken(true);
-        // Salvează token-ul în localStorage
+        // Salveaza token-ul in localStorage
         localStorage.setItem('user_token', idToken);
 
         const userRef = doc(db, "users", user.uid);
@@ -114,19 +114,19 @@ const registerWithEmailPassword = async (email, password, username, setShakeEmai
                 username: username,
                 email: email,
                 createdAt: new Date(),
-                updatedAt: new Date(),  // Adăugat updatedAt
-                image: "" // Inițial, nu are o imagine de profil
+                updatedAt: new Date(),  // Adaugat updatedAt
+                image: "" // Initial, nu are o imagine de profil
             });
             setEmailError('');
             console.log("User info saved to Firestore!");
         } else {
             console.log("User already exists in Firestore.");
         }
-        // Redirecționează utilizatorul la pagina principală
+        // Redirectioneaza utilizatorul la pagina principala
         window.location.href = "/";
 
     } catch (error) {
-         // Aici gestionăm erorile
+         // Aici gestionam erorile
          if (error.code === 'auth/email-already-in-use') {
             setShakeEmail(true);
             setTimeout(() => setShakeEmail(false), 500);
@@ -140,7 +140,7 @@ const registerWithEmailPassword = async (email, password, username, setShakeEmai
 function Index() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');  // Adăugat pentru sign up
+    const [username, setUsername] = useState('');  // Adaugat pentru sign up
     const [shakeEmail, setShakeEmail] = useState(false);
     const [shakePassword, setShakePassword] = useState(false);
     const [emailError, setEmailError] = useState('');  // Stare pentru mesajul de eroare
@@ -160,7 +160,7 @@ function Index() {
             </div>
             <div className="container flex justify-center items-center w-full h-full top-9 left-0 right-0">
                 <div className="auth-main">
-                    {/* Checkbox pentru a schimba între login și sign up */}
+                    {/* Checkbox pentru a schimba intre login si sign up */}
                     <input className="auth-input" type="checkbox" id="auth-chk" aria-hidden="true" />
 
                     {/* Formul de signup */}

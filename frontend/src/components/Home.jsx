@@ -24,7 +24,7 @@ const Home = () => {
 
     const [show, setShow] = useState(false)     //show → controleaza vizibilitatea formularului pentru dimensiuni
 
-    const responsive = {        //Seteaza numarul de elemente vizibile(design-uri recente de pe pagina Home) în functie de dimensiunea ecranului
+    const responsive = {        //Seteaza numarul de elemente vizibile(design-uri recente de pe pagina Home) in functie de dimensiunea ecranului
         superLargeDesktop: {
             breakpoint: { max: 4000, min: 3000 },
             items: 5
@@ -49,10 +49,10 @@ const Home = () => {
 
     // Navigare spre /design/create cu dimensiunile selectate de utilizator
     const create = (e) => {
-        e.preventDefault(); // Evită ca formularul să adauge parametri în URL
+        e.preventDefault(); // Evita ca formularul sa adauge parametri în URL
         navigate('/design/create', {    //Navigheaza catre ruta /design/create si trimite datele introduse de utilizator pentru dimensiuni personalizate
             state: {
-                replace: true, // Evită salvarea parametrilor în istoric
+                replace: true, // Evita salvarea parametrilor in istoric
                 type: 'create',
                 width: state.width,
                 height: state.height

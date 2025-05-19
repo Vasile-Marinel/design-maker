@@ -14,7 +14,7 @@ class DesignController {
     create_user_design = async (req, res) => {
 
         const form = formidable();
-        const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
+        const { uid } = req.user; // Preluam UID-ul utilizatorului autentificat din token
 
         try {
             cloudinary.config({
@@ -50,7 +50,7 @@ class DesignController {
 
     update_user_design = async (req, res) => {
         const form = formidable();
-        const { designId } = req.params // Preluăm ID-ul design-ului din parametrii URL-ului
+        const { designId } = req.params // Preluam ID-ul design-ului din parametrii URL-ului
 
         try {
             cloudinary.config({
@@ -61,19 +61,19 @@ class DesignController {
 
             const [fields, files] = await form.parse(req);
             const { image } = files;
-            const components = JSON.parse(fields.design[0]).design;      // Preluăm componentele din design
+            const components = JSON.parse(fields.design[0]).design;      // Preluam componentele din design
 
-            const old_design = await designModel.getDesignById(designId); // Găsim design-ul vechi în baza de date folosind functia getDesignById din designModel
+            const old_design = await designModel.getDesignById(designId); // Gasim design-ul vechi în baza de date folosind functia getDesignById din designModel
 
             if (old_design) {
                 if (old_design.imageUrl) {
                     const splitImage = old_design.imageUrl.split('/');
                     const imageFile = splitImage[splitImage.length - 1];
                     const imageName = imageFile.split('.')[0];
-                    await cloudinary.uploader.destroy(imageName); // Ștergem imaginea veche din Cloudinary
+                    await cloudinary.uploader.destroy(imageName); // Stergem imaginea veche din Cloudinary
                 }
 
-                const { url } = await cloudinary.uploader.upload(image[0].filepath); // Încărcăm imaginea nouă în Cloudinary
+                const { url } = await cloudinary.uploader.upload(image[0].filepath); // Incarcam imaginea noua in Cloudinary
 
                 // await designModel.findByIdAndUpdate(designId, {
                 //     imageUrl: url,
@@ -88,7 +88,7 @@ class DesignController {
                 return res.status(200).json({ message: "Image saved successfully" });
 
             } else {
-                return res.status(404).json({ message: "Design not found" }); // În caz de eroare, returnăm un mesaj de eroare
+                return res.status(404).json({ message: "Design not found" }); // In caz de eroare, returnam un mesaj de eroare
             }
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -96,18 +96,18 @@ class DesignController {
     }
 
     get_user_design = async (req, res) => {
-        const { designId } = req.params;  // Preluăm ID-ul design-ului din parametrii URL-ului
+        const { designId } = req.params;  // Preluam ID-ul design-ului din parametrii URL-ului
 
         try {
-            const design = await designModel.getDesignById(designId); // Găsim design-ul în baza de date folosind functia getDesignById din designModel
-            return res.status(200).json({ design: Object.values(design.components) }); // Returnăm design-ul găsit
+            const design = await designModel.getDesignById(designId); // Gasim design-ul în baza de date folosind functia getDesignById din designModel
+            return res.status(200).json({ design: Object.values(design.components) }); // Returnam design-ul gasit
         } catch (error) {
-            return res.status(500).json({ message: error.message }); // În caz de eroare, returnăm un mesaj de eroare
+            return res.status(500).json({ message: error.message }); // In caz de eroare, returnam un mesaj de eroare
         }
     }
 
     upload_user_image = async (req, res) => {
-        const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
+        const { uid } = req.user; // Preluam UID-ul utilizatorului autentificat din token
 
         const form = formidable({});
 
@@ -119,25 +119,25 @@ class DesignController {
 
         try {
             const [_, files] = await form.parse(req);
-            const { image } = files; // Preluăm imaginea din fișierele încărcate
+            const { image } = files; // Preluam imaginea din fisierele incarcate
 
-            const { url } = await cloudinary.uploader.upload(image[0].filepath); // Încărcăm imaginea în Cloudinary
+            const { url } = await cloudinary.uploader.upload(image[0].filepath); // Incarcam imaginea in Cloudinary
 
             const userImage = await userImageModel.addUserImage({
                 userId: uid,
                 imageUrl: url
-            }); // Adăugăm imaginea utilizatorului în baza de date
+            }); // Adaugam imaginea utilizatorului in baza de date
 
-            return res.status(200).json({ userImage }); // Returnăm un mesaj de succes
+            return res.status(200).json({ userImage }); // Returnam un mesaj de succes
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
     }
 
     get_user_image = async (req, res) => {
-        const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
+        const { uid } = req.user; // Preluam UID-ul utilizatorului autentificat din token
         try {
-            const images = await userImageModel.getUserImages(uid); // Obținem imaginile utilizatorului din baza de date
+            const images = await userImageModel.getUserImages(uid); // Obtinem imaginile utilizatorului din baza de date
             return res.status(200).json({ images });
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -146,7 +146,7 @@ class DesignController {
 
     get_initial_image = async (req, res) => {
         try {
-            const images = await designImageModel.getAllDesignImages(); // Obținem imaginile utilizatorului din baza de date
+            const images = await designImageModel.getAllDesignImages(); // Obtinem imaginile utilizatorului din baza de date
             return res.status(200).json({ images });
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -155,7 +155,7 @@ class DesignController {
 
     get_background_image = async (req, res) => {
         try {
-            const images = await backgroundModel.getAllBackgroundImages(); // Obținem imaginile utilizatorului din baza de date
+            const images = await backgroundModel.getAllBackgroundImages(); // Obtinem imaginile utilizatorului din baza de date
             return res.status(200).json({ images });
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -163,10 +163,10 @@ class DesignController {
     }
 
     get_user_designs = async (req, res) => {
-        const { uid } = req.user; // Preluăm UID-ul utilizatorului autentificat din token
+        const { uid } = req.user; // Preluam UID-ul utilizatorului autentificat din token
 
         try {
-            const designs = (await designModel.getDesignsByUserId(uid)); // Obținem imaginile utilizatorului din baza de date
+            const designs = (await designModel.getDesignsByUserId(uid)); // Obtinem imaginile utilizatorului din baza de date
             return res.status(200).json({ designs });
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -174,11 +174,11 @@ class DesignController {
     }
 
     delete_user_design = async (req, res) => {
-        const { designId } = req.params; // Preluăm ID-ul design-ului din parametrii URL-ului
+        const { designId } = req.params; // Preluam ID-ul design-ului din parametrii URL-ului
 
         try {
-            await designModel.deleteDesignById(designId); // Ștergem design-ul din baza de date folosind functia deleteDesignById din designModel
-            return res.status(200).json({ message: "Design deleted successfully" }); // Returnăm un mesaj de succes
+            await designModel.deleteDesignById(designId); // Stergem design-ul din baza de date folosind functia deleteDesignById din designModel
+            return res.status(200).json({ message: "Design deleted successfully" }); // Returnam un mesaj de succes
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
@@ -186,7 +186,7 @@ class DesignController {
 
     get_templates = async (req, res) => {
         try {
-            const templates = (await templateModel.getAllTemplates()); // Obținem imaginile utilizatorului din baza de date
+            const templates = (await templateModel.getAllTemplates()); // Obtinem imaginile utilizatorului din baza de date
             return res.status(200).json({ templates });
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -195,10 +195,10 @@ class DesignController {
 
     add_user_template = async (req, res) => {
         const { template_id } = req.params;
-        const { uid } = req.user;   // Preluăm UID-ul utilizatorului autentificat din token
+        const { uid } = req.user;   // Preluam UID-ul utilizatorului autentificat din token
 
         try {
-            const template = (await templateModel.getTemplateById(template_id)); // Obținem imaginile utilizatorului din baza de date
+            const template = (await templateModel.getTemplateById(template_id)); // Obtinem imaginile utilizatorului din baza de date
             const design = await designModel.createDesign({
                 userId: uid,
                 components: template.components,

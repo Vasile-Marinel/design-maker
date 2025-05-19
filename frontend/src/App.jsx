@@ -18,7 +18,7 @@ import Main from "./pages/Main";
 import {token_decode} from './utils/index'
 import Settings from './components/Settings'
 
-// Verifică dacă utilizatorul este autentificat
+// Verifica daca utilizatorul este autentificat
 const token = localStorage.getItem('user_token');
 const userInfo = token_decode(token);
 
@@ -46,8 +46,8 @@ const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele
     element: userInfo ? <CreateDesign /> : <Navigate to='/' />  //Afiseaza CreateDesign (pentru crearea unui design). sau redirectioneaza catre pagina de login daca utilizatorul nu este autentificat.
   },
   {
-    path: "/design/:designId/edit",   //Afisează Main (pentru editarea unui design, folosind un ID din URL).
-    element: userInfo ? <Main /> : <Navigate to='/' />    //Afisează Main (pentru editarea unui design, folosind un ID din URL). sau redirectioneaza catre pagina de login daca utilizatorul nu este autentificat.
+    path: "/design/:designId/edit",   //Afiseaza Main (pentru editarea unui design, folosind un ID din URL).
+    element: userInfo ? <Main /> : <Navigate to='/' />    //Afiseaza Main (pentru editarea unui design, folosind un ID din URL). sau redirectioneaza catre pagina de login daca utilizatorul nu este autentificat.
    },
    {
     path: "/settings",
@@ -55,7 +55,7 @@ const router = createBrowserRouter([    //createBrowserRouter → Creeaza rutele
    }
 ])
 
-function App() {    //RouterProvider face ca întreaga aplicație să folosească acest router.
+function App() {    //RouterProvider face ca întreaga aplicatie sa foloseasca acest router.
   return <RouterProvider router={router} />   
 }
 

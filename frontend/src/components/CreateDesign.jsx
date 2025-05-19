@@ -17,7 +17,7 @@ const CreateDesign = () => {
     const obj = {
         name: "main_frame",
         type: "rect",
-        id: Date.now(), // Generăm un ID unic folosind timestamp-ul curent
+        id: Date.now(), // Generam un ID unic folosind timestamp-ul curent
         height: state.height,
         width: state.width,
         z_index: 1,
@@ -28,7 +28,7 @@ const CreateDesign = () => {
     const [loader, setLoader] = useState(false)     //loader este folosit pentru a afisa un loader rotativ in timpul procesului de salvare a design-ului
 
     const create_design = async () => {
-        //if (!ref.current) return; // Verificăm dacă ref-ul este valid
+        //if (!ref.current) return; // Verificam daca ref-ul este valid
         const image = await htmlToImage.toBlob(ref.current)     //converteste elementul DOM in imagine
 
         const design = JSON.stringify([obj])     //converteste elementul DOM in JSON

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";        //useState → folosit pentru a gestiona starea componentei, este o bibliotecă de hook-uri standard React
+import React, { useState, useEffect } from "react";        //useState → folosit pentru a gestiona starea componentei, este o biblioteca de hook-uri standard React
 import Logo from "../assets/Design-Maker.png";
-import { Link, useLocation } from "react-router-dom";        //Link-creează linkuri pentru navigare între pagini fără reîncărcare
+import { Link, useLocation } from "react-router-dom";        //Link-creeaza linkuri pentru navigare intre pagini fara reincarcare
 import { FaHome } from "react-icons/fa";
 import { BsFolder, BsGrid1X2 } from "react-icons/bs";
-import { Outlet } from "react-router-dom";      //este locul unde vor fi afișate componentele paginilor pe baza rutei actuale
-import { useNavigate } from "react-router-dom";      //useNavigate → permite navigarea programatică între pagini
+import { Outlet } from "react-router-dom";      //este locul unde vor fi afisate componentele paginilor pe baza rutei actuale
+import { useNavigate } from "react-router-dom";      //useNavigate → permite navigarea programatica intre pagini
 import { token_decode } from "../utils/index";
-import default_profile_icon from "../assets/default_profile_icon.png"; // Importa imaginea implicită pentru profil
+import default_profile_icon from "../assets/default_profile_icon.png"; // Importa imaginea implicita pentru profil
 import api from "../utils/api";      //Importa api-ul pentru a face cereri catre server
 import { SiInstagram } from "react-icons/si";
 import { MdPhotoSizeSelectLarge } from "react-icons/md";
@@ -21,15 +21,15 @@ const Layout = () => {
 
 
     const navigate = useNavigate()    //useNavigate → permite navigarea programatica catre alta pagina
-    const { pathname } = useLocation()    // reține ruta curentă (de exemplu, /projects, /templates)
+    const { pathname } = useLocation()    // retine ruta curenta (de exemplu, /projects, /templates)
     const [show, setShow] = useState(false)     //show → controleaza vizibilitatea formularului pentru dimensiuni
     const [showFormats, setShowFormats] = useState(false);
 
     // const create = (e) => {
-    //     e.preventDefault(); // Evită ca formularul să adauge parametri în URL
+    //     e.preventDefault(); // Evita ca formularul sa adauge parametri in URL
     //     navigate('/design/create', {    //Navigheaza catre ruta /design/create si trimite datele introduse de utilizator pentru dimensiuni personalizate
     //         state: {
-    //             replace: true, // Evită salvarea parametrilor în istoric
+    //             replace: true, // Evita salvarea parametrilor în istoric
     //             type: 'create',
     //             width: 900,
     //             height: 650

@@ -1,7 +1,7 @@
 const { db } = require('../firebaseAdmin'); // Import Firestore din admin SDK
 
 class TemplateModel {
-    // Adaugă un nou template
+    // Adauga un nou template
     async createTemplate(data) {
         try {
             const templateRef = await db.collection('templates').add({
@@ -15,7 +15,7 @@ class TemplateModel {
         }
     }
 
-    // Returnează toate template-urile
+    // Returneaza toate template-urile
     async getAllTemplates() {
         try {
             const snapshot = await db.collection('templates')
@@ -33,7 +33,7 @@ class TemplateModel {
         }
     }
 
-    // Returnează un singur template după ID
+    // Returneaza un singur template dupa ID
     async getTemplateById(templateId) {
         try {
             const doc = await db.collection('templates').doc(templateId).get();
@@ -46,7 +46,7 @@ class TemplateModel {
         }
     }
 
-    // Șterge un template după ID
+    // Sterge un template dupa ID
     async deleteTemplate(templateId) {
         try {
             await db.collection('templates').doc(templateId).delete();

@@ -40,7 +40,7 @@ class AuthController {
 
     try {
       // 1. Reautentificare cu parola veche
-      const firebaseApiKey = process.env.FIREBASE_API_KEY; // 🛑 Asigură-te că ai setat această variabilă
+      const firebaseApiKey = process.env.FIREBASE_API_KEY; // Ne asiguram ca am setat aceasta variabila
 
       const verifyPasswordUrl = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${firebaseApiKey}`;
       const response = await axios.post(verifyPasswordUrl, {
@@ -49,7 +49,7 @@ class AuthController {
         returnSecureToken: false
       });
 
-      // 2. Dacă parola este corectă, facem update
+      // 2. Daca parola este corecta, facem update
       await admin.auth().updateUser(uid, {
         password: newPassword
       });

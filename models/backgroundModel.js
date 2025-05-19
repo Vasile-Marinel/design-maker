@@ -1,4 +1,4 @@
-const { db } = require('../firebaseAdmin'); // importă instanța Firestore
+const { db } = require('../firebaseAdmin'); // importa instanta Firestore
 
 class BackgroundImageModel {
     async addBackgroundImage(imageUrl) {

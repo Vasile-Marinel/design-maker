@@ -1,5 +1,5 @@
 const { db } = require("../firebaseAdmin"); // NU importa din ../server
-// Firestore din Admin SDK suportă direct db.collection()
+// Firestore din Admin SDK suporta direct db.collection()
 
 class DesignModel {
     async createDesign(data) {
@@ -29,7 +29,7 @@ class DesignModel {
     async updateDesignById(designId, newData) {
         try {
             const designRef = db.collection("designs").doc(designId);
-            await designRef.set(newData, { merge: true }); // sau fără merge, dacă vrei suprascriere
+            await designRef.set(newData, { merge: true }); // sau fara merge, daca vrei suprascriere
             return true;
         } catch (error) {
             throw new Error("Failed to update design: " + error.message);
@@ -40,7 +40,7 @@ class DesignModel {
         try {
             const snapshot = await db.collection("designs")
                 .where("userId", "==", userId)
-                .orderBy("createdAt", "desc")       // ordonare descrescătoare după data creării pentru a obține cele mai recente designuri in pagina de Home
+                .orderBy("createdAt", "desc")       // ordonare descrescatoare dupa data crearii pentru a obtine cele mai recente designuri in pagina de Home
                 .get();
     
             const designs = [];

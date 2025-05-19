@@ -7,13 +7,13 @@ const auth = async (req, res, next) => {
         const token = authorization.split(' ')[1] // Extragem token-ul din header
         if (token) {
             try {
-                // Verificăm token-ul folosind Firebase Admin SDK
-                const decodedToken = await admin.auth().verifyIdToken(token);   //decodedToken conține informațiile utilizatorului autentificat, extrase din token-ul JWT emis de Firebase Authentication.
+                // Verificam token-ul folosind Firebase Admin SDK
+                const decodedToken = await admin.auth().verifyIdToken(token);   //decodedToken contine informatiile utilizatorului autentificat, extrase din token-ul JWT emis de Firebase Authentication.
 
-                // Adăugăm datele utilizatorului la request pentru a le folosi în rutele protejate
+                // Adaugam datele utilizatorului la request pentru a le folosi in rutele protejate
                 req.user = decodedToken;
 
-                next(); // Continuăm către ruta următoare
+                next(); // Continuam catre ruta urmatoare
             } catch (error) {
                 return res.status(401).json({ message: "Unauthorized" })
             }
