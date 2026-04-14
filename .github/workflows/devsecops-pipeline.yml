@@ -1,0 +1,34 @@
+name: DevSecOps Pipeline - Design Maker
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  security_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. SCA - Scanarea dependențelor (npm)
+      - name: Run NPM Audit
+        run: npm audit --audit-level=high
+        # Aceasta verifică dacă librăriile tale au vulnerabilități cunoscute [cite: 14]
+
+      # 2. Secret Scanning - Verifică să nu ai chei Firebase/Cloudinary în cod
+      - name: Secret Detection
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
+
+      # 3. SAST - Analiza statică a codului (pentru JS/Node.js)
+      - name: Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/javascript
