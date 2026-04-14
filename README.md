@@ -1,3 +1,5 @@
+![DevSecOps Pipeline](https://github.com/Vasile-Marinel/design-maker/actions/workflows/devsecops-pipeline.yml/badge.svg)
+
 # Aplicația „Design Maker”
 
 ## Descriere generală
