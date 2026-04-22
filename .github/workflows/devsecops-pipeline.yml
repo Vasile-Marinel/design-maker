@@ -55,7 +55,7 @@ jobs:
       # din istoric (un secret Firebase revocat în cod este tot un incident de
       # securitate care trebuie documentat și înțeles).
       - name: Secret Detection - TruffleHog
-        uses: trufflesecurity/trufflehog@d1c8e514feec75c7fcae0eff3e7e5dbc7fa45c3f # v3.88.8
+        uses: trufflesecurity/trufflehog@v3.94.3 # v3.88.8
         with:
           path: ./
           base: ${{ github.event.repository.default_branch }}
