@@ -62,11 +62,11 @@ Push / Pull Request
 
 #### 1. NPM Audit — Software Composition Analysis (SCA)
 
-Verifică toate dependențele din `package.json` față de baza de date NVD (National Vulnerability Database) și identifică pachete cu vulnerabilități cunoscute. Pipeline-ul salvează raportul complet în format JSON ca artifact descărcabil și blochează execuția doar la severitatea **Critical** — vulnerabilitățile de severitate inferioară sunt documentate și gestionate separat ca decizii conștiente de acceptare a riscului.
+Verifică toate dependențele din `package.json` față de baza de date NVD (National Vulnerability Database) și identifică pachete cu vulnerabilități cunoscute. Pipeline-ul salvează raportul complet în format JSON ca artifact descărcabil și blochează execuția doar la severitatea **Critical**, vulnerabilitățile de severitate inferioară nu blochează execuția, dar sunt documentate în raportul JSON.
 
 #### 2. TruffleHog — Secret Scanning
 
-Scanează **întregul istoric Git** al proiectului căutând secrete expuse accidental: chei API Firebase, token-uri Cloudinary, parole, credențiale cloud. Parametrul `fetch-depth: 0` la checkout este esențial — fără istoricul complet, un secret adăugat și „șters" în commit-uri anterioare ar trece nedetectat. Relevanța pentru Design Maker este directă: aplicația folosește Firebase și Cloudinary, servicii cloud ale căror credențiale compromise ar oferi acces complet la datele utilizatorilor și la stocarea media.
+Scanează **întregul istoric Git** al proiectului căutând secrete expuse accidental: chei API Firebase, token-uri Cloudinary, parole, credențiale cloud. Parametrul `fetch-depth: 0` la checkout este esențial, fără istoricul complet, un secret adăugat și „șters" în commit-uri anterioare ar trece nedetectat. Relevanța pentru Design Maker este directă: aplicația folosește Firebase și Cloudinary, servicii cloud ale căror credențiale compromise ar oferi acces complet la datele utilizatorilor și la stocarea media.
 
 #### 3. Semgrep — Static Application Security Testing (SAST)
 
@@ -157,15 +157,14 @@ Axios prezintă o vulnerabilitate de tip Server-Side Request Forgery ([GHSA-3p68
 
 **`cloudinary` — Argument Injection**
 
-SDK-ul Cloudinary conține o vulnerabilitate de injectare a argumentelor prin parametri care includ caracterul `&` ([GHSA-g4mf-96x5-5m2c](https://github.com/advisories/GHSA-g4mf-96x5-5m2c)). Relevanța pentru Design Maker este directă — Cloudinary este utilizat pentru încărcarea și gestionarea imaginilor, operațiuni care procesează input de la utilizatori.
+SDK-ul Cloudinary conține o vulnerabilitate de injectare a argumentelor prin parametri care includ caracterul `&` ([GHSA-g4mf-96x5-5m2c](https://github.com/advisories/GHSA-g4mf-96x5-5m2c)). Relevanța pentru Design Maker este directă, Cloudinary este utilizat pentru încărcarea și gestionarea imaginilor, operațiuni care procesează input de la utilizatori.
 
 **`firebase-admin` — Dependențe vulnerabile (trade-off documentat)**
 
-Firebase Admin SDK prezintă vulnerabilități prin dependențele sale tranzitive (`@google-cloud/firestore`, `@google-cloud/storage`). Fix-ul disponibil necesită un **breaking change**: downgrade la versiunea 10.3.0, incompatibilă cu API-ul utilizat în codul actual. Decizia adoptată: vulnerabilitatea este acceptată ca risc rezidual documentat, cu planificarea migrării într-o iterație viitoare — practică standard în industrie când costul remedierii imediate depășește riscul real în contextul specific al aplicației.
+Firebase Admin SDK prezintă vulnerabilități prin dependențele sale tranzitive (`@google-cloud/firestore`, `@google-cloud/storage`). Fix-ul disponibil necesită un **breaking change**: downgrade la versiunea 10.3.0, incompatibilă cu API-ul utilizat în codul actual. Decizia adoptată: vulnerabilitatea este acceptată ca risc rezidual documentat, cu planificarea migrării într-o iterație viitoare, practică standard în industrie când costul remedierii imediate depășește riscul real în contextul specific al aplicației.
 
 ### Starea finală — după `npm audit fix`
 
-> ⚠️ **Actualizează această secțiune după ce rulezi `npm audit fix` local.**
 
 ```bash
 npm audit fix
@@ -179,7 +178,7 @@ npm audit
 | 🟡 Moderate | 4 | [X] |
 | 🟢 Low | 9 | [X] |
 
-Vulnerabilitățile reziduale după remediere sunt asociate exclusiv cu `firebase-admin` și dependențele sale — gestionate ca risc acceptat documentat (vezi secțiunea anterioară).
+Vulnerabilitățile reziduale după remediere sunt asociate exclusiv cu `firebase-admin` și dependențele sale, gestionate ca risc acceptat documentat (vezi secțiunea anterioară).
 
 ---
 
@@ -187,7 +186,7 @@ Vulnerabilitățile reziduale după remediere sunt asociate exclusiv cu `firebas
 
 Pipeline-ul DevSecOps implementat adresează riscuri **specifice mediilor cloud**, distincte de securitatea generală a aplicațiilor:
 
-**Protecția secretelor cloud** — TruffleHog scanează istoricul Git după credențiale Firebase și Cloudinary. Compromiterea acestora oferă acces complet la baza de date Firestore a tuturor utilizatorilor și la stocarea media — un impact imposibil în arhitecturi fără servicii cloud externe.
+**Protecția secretelor cloud** — TruffleHog scanează istoricul Git după credențiale Firebase și Cloudinary. Compromiterea acestora oferă acces complet la baza de date Firestore a tuturor utilizatorilor și la stocarea media, un impact imposibil în arhitecturi fără servicii cloud externe.
 
 **Supply chain security în CI/CD** — Pipeline-ul însuși este o suprafață de atac. Acțiunile GitHub sunt versionate (`@v5`, `@v3.94.3`) pentru a preveni supply chain attacks prin modificarea tag-urilor. Permisiunile token-ului sunt restricționate la `read` prin principiul least privilege.
 
@@ -199,7 +198,7 @@ Pipeline-ul DevSecOps implementat adresează riscuri **specifice mediilor cloud*
 
 ## Limitări cunoscute ale pipeline-ului
 
-**Scanare imagini Docker** — Design Maker utilizează servicii cloud managed (Firebase, Cloudinary, Vercel/Netlify) și nu necesită containere Docker în arhitectura sa curentă. Într-o arhitectură bazată pe containere, pasul următor ar fi integrarea unui scanner de tip Trivy, care verifică vulnerabilitățile la nivel de sistem de operare din imaginea Docker — un strat pe care npm audit nu îl acoperă.
+**Scanare imagini Docker** — Design Maker utilizează servicii cloud managed (Firebase, Cloudinary, Vercel/Netlify) și nu necesită containere Docker în arhitectura sa curentă. Într-o arhitectură bazată pe containere, pasul următor ar fi integrarea unui scanner de tip Trivy, care verifică vulnerabilitățile la nivel de sistem de operare din imaginea Docker, un strat pe care npm audit nu îl acoperă.
 
 **DAST (Dynamic Application Security Testing)** — Pipeline-ul actual analizează codul static și dependențele, dar nu testează aplicația în execuție. Un pipeline complet ar include și DAST (ex: OWASP ZAP) pentru detectarea vulnerabilităților care apar doar la runtime.
 
