@@ -153,32 +153,30 @@ NPM Audit a identificat **28 de vulnerabilități** în dependențele proiectulu
 
 **`axios` — SSRF și Cloud Metadata Exfiltration**
 
-Axios prezintă o vulnerabilitate de tip Server-Side Request Forgery ([GHSA-3p68-rc4w-qgx5](https://github.com/advisories/GHSA-3p68-rc4w-qgx5)) și o vulnerabilitate de exfiltrare a metadatelor cloud prin injectare de headere ([GHSA-fvcv-3m26-pcqx](https://github.com/advisories/GHSA-fvcv-3m26-pcqx)). În context cloud, SSRF permite unui atacator să redirecționeze request-uri către endpoint-ul intern de metadate al instanței (`169.254.169.254`), de unde poate extrage credențiale IAM temporare. Această vulnerabilitate este specifică mediilor cloud și nu ar fi exploatabilă în aceeași manieră pe o aplicație desktop.
+Axios prezintă o vulnerabilitate de tip Server-Side Request Forgery ([GHSA-3p68-rc4w-qgx5](https://github.com/advisories/GHSA-3p68-rc4w-qgx5)) și o vulnerabilitate de exfiltrare a metadatelor cloud prin injectare de headere ([GHSA-fvcv-3m26-pcqx](https://github.com/advisories/GHSA-fvcv-3m26-pcqx)). În context cloud, SSRF permite unui atacator să redirecționeze request-uri către endpoint-ul intern de metadate al instanței (`169.254.169.254`), de unde poate extrage credențiale IAM temporare. Această vulnerabilitate este specifică mediilor cloud și nu ar fi exploatabilă în aceeași manieră pe o aplicație desktop. Remediată prin `npm audit fix`.
 
 **`cloudinary` — Argument Injection**
 
-SDK-ul Cloudinary conține o vulnerabilitate de injectare a argumentelor prin parametri care includ caracterul `&` ([GHSA-g4mf-96x5-5m2c](https://github.com/advisories/GHSA-g4mf-96x5-5m2c)). Relevanța pentru Design Maker este directă, Cloudinary este utilizat pentru încărcarea și gestionarea imaginilor, operațiuni care procesează input de la utilizatori.
+SDK-ul Cloudinary conține o vulnerabilitate de injectare a argumentelor prin parametri care includ caracterul `&` ([GHSA-g4mf-96x5-5m2c](https://github.com/advisories/GHSA-g4mf-96x5-5m2c)). Relevanța pentru Design Maker este directă, Cloudinary este utilizat pentru încărcarea și gestionarea imaginilor, operațiuni care procesează input de la utilizatori. Remediată prin `npm audit fix`.
 
-**`firebase-admin` — Dependențe vulnerabile (trade-off documentat)**
+**`firebase-admin` și `bcrypt` — Dependențe vulnerabile (risc acceptat documentat)**
 
-Firebase Admin SDK prezintă vulnerabilități prin dependențele sale tranzitive (`@google-cloud/firestore`, `@google-cloud/storage`). Fix-ul disponibil necesită un **breaking change**: downgrade la versiunea 10.3.0, incompatibilă cu API-ul utilizat în codul actual. Decizia adoptată: vulnerabilitatea este acceptată ca risc rezidual documentat, cu planificarea migrării într-o iterație viitoare, practică standard în industrie când costul remedierii imediate depășește riscul real în contextul specific al aplicației.
+Firebase Admin SDK prezintă vulnerabilități prin dependențele sale tranzitive (`@google-cloud/firestore`, `@google-cloud/storage`, `form-data@2.5.3`). Fix-ul disponibil necesită downgrade la versiunea 10.1.0, un **breaking change** major. Analiza codului sursă arată că proiectul utilizează exclusiv `admin.initializeApp()` și `admin.firestore()`, API stabil prezent identic în toate versiunile majore. Cu toate acestea, downgrade-ul a fost respins din trei motive: (1) absența testelor automate care să valideze că nicio altă dependență nu este afectată, (2) exploatabilitatea scăzută a vulnerabilităților tranzitive în contextul specific al aplicației, și (3) riscul de regresii prin downgrade de la v13 la o versiune din 2022 cu trei ani de patch-uri lipsă. Situație identică pentru `bcrypt`, al cărui fix necesită `bcrypt@6.0.0`. Ambele sunt acceptate ca risc rezidual documentat, cu recomandarea migrării când aceste pachete vor publica versiuni care rezolvă dependențele tranzitive.
 
 ### Starea finală — după `npm audit fix`
 
 
-```bash
-npm audit fix
-npm audit
-```
+`npm audit fix` a remediat **14 vulnerabilități**. Cele 14 rămase sunt grupate în două clustere cu breaking changes documentate mai sus.
 
-| Severitate | Înainte | După |
-|---|---|---|
-| 🔴 Critical | 3 | [1] |
-| 🟠 High | 12 | [3] |
-| 🟡 Moderate | 4 | [8] |
-| 🟢 Low | 9 | [2] |
+| Severitate | Înainte | După `npm audit fix` | Remediate |
+|---|---|---|---|
+| 🔴 Critical | 3 | 1 | 2 |
+| 🟠 High | 12 | 3 | 9 |
+| 🟡 Moderate | 4 | 8 | — |
+| 🟢 Low | 9 | 2 | 7 |
+| **Total** | **28** | **14** | **14** |
 
-Vulnerabilitățile reziduale după remediere sunt asociate exclusiv cu `firebase-admin` și dependențele sale, gestionate ca risc acceptat documentat (vezi secțiunea anterioară).
+> **Notă:** Moderatele au crescut de la 4 la 8 după fix — `npm audit fix` a actualizat unele pachete care au expus dependențe tranzitive noi, vizibile acum în audit. Nu reprezintă o înrăutățire reală a securității, ci o vizibilitate mai completă a dependency tree-ului.
 
 ---
 
@@ -255,3 +253,15 @@ npm audit --json > npm-audit-report.json
 ```
 
 ---
+
+## Referințe
+
+- [OWASP Top 10 CI/CD Security Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/)
+- [GHSA-3p68-rc4w-qgx5 — Axios SSRF](https://github.com/advisories/GHSA-3p68-rc4w-qgx5)
+- [GHSA-fvcv-3m26-pcqx — Axios Cloud Metadata Exfiltration](https://github.com/advisories/GHSA-fvcv-3m26-pcqx)
+- [GHSA-g4mf-96x5-5m2c — Cloudinary Argument Injection](https://github.com/advisories/GHSA-g4mf-96x5-5m2c)
+- [NVD — National Vulnerability Database](https://nvd.nist.gov/)
+- [Semgrep Rules Registry](https://semgrep.dev/r)
+- [TruffleHog Documentation](https://github.com/trufflesecurity/trufflehog)
+- [SLSA Supply Chain Security Framework](https://slsa.dev/)
+- [GitHub Actions Security Hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
