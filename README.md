@@ -173,10 +173,10 @@ npm audit
 
 | Severitate | Înainte | După |
 |---|---|---|
-| 🔴 Critical | 3 | [X] |
-| 🟠 High | 12 | [X] |
-| 🟡 Moderate | 4 | [X] |
-| 🟢 Low | 9 | [X] |
+| 🔴 Critical | 3 | [1] |
+| 🟠 High | 12 | [3] |
+| 🟡 Moderate | 4 | [8] |
+| 🟢 Low | 9 | [2] |
 
 Vulnerabilitățile reziduale după remediere sunt asociate exclusiv cu `firebase-admin` și dependențele sale, gestionate ca risc acceptat documentat (vezi secțiunea anterioară).
 

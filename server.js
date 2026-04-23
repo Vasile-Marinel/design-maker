@@ -25,9 +25,9 @@ app.use('/api', require('./routes/designRouts'));
 // app.use('/api', require('./routes/authRoutes')); // activeaza dacă ai rute de autentificare
 
 // Serveste frontend-ul în productie (vite build dist)
-app.use(express.static(path.join(__dirname, "./frontend/dist")));
+app.use(express.static(path.join(__dirname, "design-maker/frontend/dist")));
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "./frontend/dist/index.html"));
+    res.sendFile(path.resolve(__dirname, "design-maker/frontend/dist/index.html"));
 });
 
 //Pornim serverul
