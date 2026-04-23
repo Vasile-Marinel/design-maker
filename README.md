@@ -1,7 +1,5 @@
 # Design Maker
 
-![DevSecOps Pipeline](https://github.com/Vasile-Marinel/design-maker/actions/workflows/devsecops-pipeline.yml/badge.svg)
-
 ## Descriere generală
 
 „Design Maker" este o aplicație web interactivă destinată utilizatorilor care doresc să creeze rapid și intuitiv design-uri grafice personalizate. Aplicația oferă o interfață modernă și prietenoasă, accesibilă doar după autentificare, prin care utilizatorii pot adăuga, edita și salva conținut vizual precum forme, text, imagini și coduri QR.
@@ -33,6 +31,7 @@
 ---
 
 ## Pipeline DevSecOps
+![DevSecOps Pipeline](https://github.com/Vasile-Marinel/design-maker/actions/workflows/devsecops-pipeline.yml/badge.svg)
 
 Proiectul integrează un pipeline de securitate automatizat configurat cu **GitHub Actions**, care rulează la fiecare `push` sau `pull request` pe branch-urile `main` și `master`. Pipeline-ul implementează trei straturi de analiză complementare: SCA, Secret Scanning și SAST.
 
