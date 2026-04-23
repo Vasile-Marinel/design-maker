@@ -218,6 +218,10 @@ Pipeline-ul DevSecOps implementat adresează riscuri **specifice mediilor cloud*
     ```bash
     npm install
     ```
+    ```bash
+    cd frontend
+    npm install
+    ```
 
 3. Adaugă fișierul `.env` cu cheile Firebase:
     ```
