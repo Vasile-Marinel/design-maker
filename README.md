@@ -245,6 +245,11 @@ npm run build
 ## Rularea pipeline-ului DevSecOps
 
 Pipeline-ul rulează automat la fiecare push pe GitHub. Pentru a vedea rezultatele, accesează tab-ul **Actions** din repository. Raportul NPM Audit complet este disponibil în secțiunea **Artifacts** a fiecărei rulări.
+Raportul JSON conține pentru fiecare vulnerabilitate: 
+severitatea, pachetul afectat, versiunea vulnerabilă, 
+CVE-ul asociat și dacă există fix disponibil. 
+Este accesibil în GitHub Actions → rularea curentă → 
+secțiunea **Artifacts** → `npm-audit-report.zip`.
 
 Pentru a rula analiza de vulnerabilități local:
 ```bash
